@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es2023",
     "types": [],
     "esModuleInterop": true,
     "sourceMap": true,
