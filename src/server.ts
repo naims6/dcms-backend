@@ -1,7 +1,7 @@
 import { Server } from "http";
 import { prisma } from "./lib/prisma";
 import app from "./app";
-import config from "./config";
+import config from "./config/env";
 
 const bootstrap = async () => {
   let server: Server;
@@ -59,7 +59,6 @@ const bootstrap = async () => {
         process.exit(1);
       }
     });
-
   } catch (error) {
     console.log("Server Error", error);
     await prisma.$disconnect();
