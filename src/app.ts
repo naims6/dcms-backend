@@ -1,10 +1,19 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import router from "./app/routers/routes";
+import router from "./app/routes/routes";
 import notFound from "./app/middlewares/notFound";
 import globalError from "./app/middlewares/globalError";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+import YAML from "yaml";
 
 const app: Application = express();
+
+const file = fs.readFileSync("./openapi.yaml", "utf8");
+const parsedYaml = YAML.parse(file);
+
+// swagger ui
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(parsedYaml));
 
 app.use(cors());
 app.use(express.json());
