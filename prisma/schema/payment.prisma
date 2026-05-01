@@ -1,0 +1,30 @@
+model Payment {
+  id                  String           @id @default(uuid())
+
+  studentId           String
+
+  purpose             PaymentPurpose
+
+  amount              Decimal          @db.Decimal(10, 2)
+
+  paymentType         String
+
+  transactionId       String?          @unique
+  sslcommerzOrderId   String?          @unique
+
+  status              PaymentStatus    @default(PENDING)
+
+  paymentDate         DateTime?
+  paymentMethod       String?
+
+  remarks             String?
+
+  student             Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  @@index([studentId])
+  @@index([status])
+  @@index([purpose])
+}

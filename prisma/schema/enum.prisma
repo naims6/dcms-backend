@@ -1,12 +1,8 @@
 enum Role {
+  SUPER_ADMIN
   ADMIN
   TEACHER
   STUDENT
-}
-
-enum StudentStatus {
-  ACTIVE
-  INACTIVE
 }
 
 enum AdmissionStatus {
@@ -15,8 +11,33 @@ enum AdmissionStatus {
   REJECTED
 }
 
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum GuardianRelation {
+  FATHER
+  MOTHER
+  BROTHER
+  SISTER
+  UNCLE
+  AUNT
+  OTHER
+}
+
 enum Gender {
   MALE
   FEMALE
+  OTHER
+}
+
+enum PaymentPurpose {
+  ADMISSION
+  MONTHLY
+  EXAM
+  TRANSPORT
   OTHER
 }
