@@ -1,44 +1,19 @@
 model Admission {
-  id                String   @id @default(uuid())
+  id             String            @id @default(uuid())
 
-  // Student Information
-  fullName          String
-  dateOfBirth       DateTime
-  gender            Gender
-  bloodGroup        String?
-  religion          String
-  studentPhoto      String?   // image URL
+  studentId      String
+  applicationId  String            @unique
 
-  // Academic Information
-  classApplying     String
-  previousSchool    String
-  previousClass     String
-  previousGrade     String
+  status         AdmissionStatus   @default(PENDING)
 
-  // Father তথ্য
-  fatherName        String
-  fatherOccupation  String
-  fatherPhone       String
+  appliedDate    DateTime          @default(now())
+  approvedDate   DateTime?
+  rejectedDate   DateTime?
 
-  // Mother তথ্য
-  motherName        String
-  motherOccupation  String
-  motherPhone       String
+  remarks        String?
 
-  // Contact Information
-  address           String
-  city              String
-  postalCode        String
-  email             String
-  emergencyContact  String
+  student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
-  // Additional
-  guardianName      String?
-  specialNotes      String?
-
-  // System Fields
-  status            AdmissionStatus @default(PENDING)
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  @@index([studentId])
+  @@index([status])
 }

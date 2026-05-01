@@ -1,0 +1,9 @@
+model Class {
+  id           String    @id @default(uuid())
+
+  name         String
+  numericValue Int
+  section      String
+
+  students     Student[]
+}

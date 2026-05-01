@@ -1,10 +1,23 @@
 model User {
-    id          String @id @default(uuid())
-    email       String @unique
-    role        Role
-    student     Student?
-    teacher     Teacher?
+  id        String   @id @default(uuid())
 
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+  name      String
+  email     String   @unique
+  phone     String   @unique
+  password  String
+
+  role      Role
+  gender    Gender
+
+  isActive  Boolean  @default(false)
+
+  student   Student?
+  teacher   Teacher?
+  admin     Admin?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([email])
 }

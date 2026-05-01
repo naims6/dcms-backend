@@ -1,19 +1,14 @@
 model Teacher {
-  id             String   @id @default(uuid())
+  id               String    @id @default(uuid())
 
-  userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id])
+  userId           String    @unique
 
-  name           String
-  phone          String
-  designation    String
-  joinDate       DateTime
-  bio            String?
-  photo          String?
-  experience     String?
-  specialization String?
-  gender         String?
-  isActive       Boolean @default(true)
+  subject          String
+  qualification    String?
 
-  createdAt      DateTime @default(now())
+  experienceYears  Int?
+
+  joiningDate      DateTime
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

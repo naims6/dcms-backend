@@ -1,17 +1,29 @@
 model Student {
-  id               String   @id @default(uuid())
-  userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id])
+  id             String      @id @default(uuid())
 
-  registrationId   String   @unique
-  pinHash          String
+  userId         String      @unique
+  classId        String
 
-  name             String
-  phone            String
-  address          String
-  gender           String
-  dateOfBirth      DateTime
+  rollNumber     String
 
-  admissionDate    DateTime
-  status           StudentStatus @default(ACTIVE)
+  dateOfBirth    DateTime
+  bloodGroup     String?
+  address        String?
+
+  admissionDate  DateTime?
+
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class          Class       @relation(fields: [classId], references: [id])
+
+  admissions     Admission[]
+  payments       Payment[]
+  guardians      Guardian[]
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@unique([classId, rollNumber])
+
+  @@index([classId])
+  @@index([rollNumber])
 }
