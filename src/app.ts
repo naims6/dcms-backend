@@ -9,7 +9,7 @@ import YAML from "yaml";
 
 const app: Application = express();
 
-const file = fs.readFileSync("./openapi.yaml", "utf8");
+const file = fs.readFileSync("./openapi/swagger.yml", "utf8");
 const parsedYaml = YAML.parse(file);
 
 // swagger ui

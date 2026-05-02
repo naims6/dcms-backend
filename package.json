@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "prisma migrate deploy && tsc"
+    "build": "prisma migrate deploy && tsc",
+    "docs": "swagger-cli bundle openapi/index.yml -o openapi/swagger.yml"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "@types/pg": "^8.20.0",
     "@types/swagger-ui-express": "^4.1.8",
     "prisma": "^7.8.0",
+    "swagger-cli": "^4.0.4",
     "typescript": "^6.0.3"
   }
 }

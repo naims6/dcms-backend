@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  title: DCMS API
+  description: Complete Rest API for DCMS
+  version: 1.0.0
+
+servers:
+  - url: https://localhost:5000/api/v1
+    description: Local Server
+  - url: https://dcms-api.example.com/api/v1
+    description: Production Server
+
+tags:
+  - name: Authentication
+
+# security:
+#   - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      $ref: "./components/security/bearer.yml#/BearerAuth"
+
+  parameters:
+    id:
+      $ref: "./components/parameters/common.yml#/IdParam"
+    applicationId:
+      $ref: "./components/parameters/common.yml#/ApplicationIdParams"
+
+  responses:
+    Unauthorized:
+      $ref: "./components/responses/common.yml#/Unauthorized"
+    Forbidden:
+      $ref: "./components/responses/common.yml#/Forbidden"
+    NotFound:
+      $ref: "./components/responses/common.yml#/NotFound"
+    ServerError:
+      $ref: "./components/responses/common.yml#/ServerError"
+    ValidationError:
+      $ref: "./components/responses/common.yml#/ValidationError"
+
+schemas:
+  ErrorResponse:
+    $ref: "./components/schemas/common.yml#/ErrorResponse"
+  SuccessResponse:
+    $ref: "./components/schemas/common.yml#/SuccessResponse"
+
+paths:
+  /auth/login:
+    $ref: "./paths/auth.yml#/login"
+  /auth/forgot-password:
+    $ref: "./paths/auth.yml#/forgot-password"
+  /auth/reset-password:
+    $ref: "./paths/auth.yml#/reset-password"
+  /auth/me:
+    $ref: "./paths/auth.yml#/me"

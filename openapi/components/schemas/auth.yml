@@ -1,0 +1,93 @@
+UserProfile:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    email:
+      type: string
+      example: student@example.com
+    phone:
+      type: string
+      example: +8801712345678
+    role:
+      type: string
+      enum: [admin, student, teacher]
+      example: student
+    name:
+      type: string
+      example: Naim Sorker
+    isActive:
+      type: boolean
+      example: true
+    createdAt:
+      type: string
+      format: date-time
+
+LoginRequest:
+  type: object
+  required:
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+      example: naimsorker6@gmail.com
+    phone:
+      type: string
+      pattern: '^\+?[1-9]\d{1,14}$'
+      example: +8801712345678
+    password:
+      type: string
+      format: password
+      minLength: 8
+  anyOf:
+    - required: [email]
+    - required: [phone]
+
+LoginResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    data:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIs...
+        expiresIn:
+          type: integer
+          example: 86400
+        user:
+          $ref: "#/UserProfile"
+
+ForgotPasswordRequest:
+  type: object
+  required:
+    - identifier
+  properties:
+    identifier:
+      type: string
+      description: Email or phone number
+      example: student@example.com
+
+ResetPasswordRequest:
+  type: object
+  required:
+    - token
+    - newPassword
+    - confirmPassword
+  properties:
+    token:
+      type: string
+      description: OTP or reset token from email/phone
+      example: 123456
+    newPassword:
+      type: string
+      format: password
+      minLength: 8
+    confirmPassword:
+      type: string
+      format: password

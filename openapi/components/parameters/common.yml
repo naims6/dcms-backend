@@ -1,0 +1,17 @@
+IdParam:
+  name: id
+  in: path
+  required: true
+  description: ID of the resource
+  schema:
+    type: string
+  example: 584694654
+
+ApplicationIdParams:
+  name: applicationId
+  in: path
+  required: true
+  description: Application ID of the resource
+  schema:
+    type: string
+  example: 54945464584
