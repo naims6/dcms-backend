@@ -1,0 +1,86 @@
+ErrorResponse:
+  type: object
+  required:
+    - success
+    - error
+    - message
+    - statusCode
+  properties:
+    success:
+      type: boolean
+      enum: [false]
+      example: false
+    error:
+      type: string
+      example: Unauthorized
+    message:
+      type: string
+      example: Invalid or expired token
+    statusCode:
+      type: integer
+      example: 401
+    timestamp:
+      type: string
+      format: date-time
+      example: "2024-01-15T10:30:00Z"
+    path:
+      type: string
+      example: "/api/v1/auth/me"
+
+ValidationError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      enum: [false]
+      example: false
+    error:
+      type: string
+      example: Validation Error
+    message:
+      type: string
+      example: Request validation failed
+    statusCode:
+      type: integer
+      example: 400
+    details:
+      type: array
+      items:
+        type: object
+        properties:
+          field:
+            type: string
+            example: email
+          message:
+            type: string
+            example: Email is required
+
+SuccessResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      enum: [true]
+      example: true
+    message:
+      type: string
+      example: Operation completed successfully
+    data:
+      type: object
+      description: Optional response data
+
+# Pagination:
+#   type: object
+#   properties:
+#     page:
+#       type: integer
+#       example: 1
+#     limit:
+#       type: integer
+#       example: 20
+#     total:
+#       type: integer
+#       example: 100
+#     pages:
+#       type: integer
+#       example: 5

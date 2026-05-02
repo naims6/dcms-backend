@@ -1,0 +1,120 @@
+login:
+  post:
+    tags: [Authentication]
+    summary: User login with email or phone
+    description: Authenticate user and receive JWT token for subsequent requests
+    operationId: login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yml#/LoginRequest'
+    responses:
+      '200':
+        description: Login successful
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/auth.yml#/LoginResponse'
+      '400':
+        $ref: '../components/responses/common.yml#/ValidationError'
+      '401':
+        description: Wrong credentials
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yml#/ErrorResponse'
+      '403':
+        description: Account not active/approved
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yml#/ErrorResponse'
+      '404':
+        $ref: '../components/responses/common.yml#/NotFound'
+      '500':
+        $ref: '../components/responses/common.yml#/ServerError'
+
+forgot-password:
+  post:
+    tags: [Authentication]
+    summary: Request password reset
+    description: Send OTP or reset link to registered email or phone number
+    operationId: forgotPassword
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yml#/ForgotPasswordRequest'
+    responses:
+      '200':
+        description: Reset link/OTP sent successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yml#/SuccessResponse'
+      '400':
+        $ref: '../components/responses/common.yml#/ValidationError'
+      '404':
+        $ref: '../components/responses/common.yml#/NotFound'
+      '500':
+        $ref: '../components/responses/common.yml#/ServerError'
+
+reset-password:
+  post:
+    tags: [Authentication]
+    summary: Reset password with token
+    description: Update password using valid OTP or reset token
+    operationId: resetPassword
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yml#/ResetPasswordRequest'
+    responses:
+      '200':
+        description: Password updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yml#/SuccessResponse'
+      '400':
+        description: Invalid or expired token
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yml#/ErrorResponse'
+      '404':
+        $ref: '../components/responses/common.yml#/NotFound'
+      '500':
+        $ref: '../components/responses/common.yml#/ServerError'
+
+me:
+  get:
+    tags: [Authentication]
+    summary: Get current user profile
+    description: Returns profile information of the logged-in user
+    operationId: getCurrentUser
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: User profile retrieved
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                data:
+                  $ref: '../components/schemas/auth.yml#/UserProfile'
+      '401':
+        $ref: '../components/responses/common.yml#/Unauthorized'
+      '404':
+        $ref: '../components/responses/common.yml#/NotFound'
+      '500':
+        $ref: '../components/responses/common.yml#/ServerError'

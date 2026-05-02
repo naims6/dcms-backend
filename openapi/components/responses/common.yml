@@ -1,0 +1,59 @@
+Unauthorized:
+  description: Missing or invalid JWT token
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yml#/ErrorResponse'
+      example:
+        success: false
+        error: Unauthorized
+        message: Invalid or expired token
+        statusCode: 401
+
+Forbidden:
+  description: Insufficient permissions
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yml#/ErrorResponse'
+      example:
+        success: false
+        error: Forbidden
+        message: You do not have permission to perform this action
+        statusCode: 403
+
+NotFound:
+  description: Resource not found
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yml#/ErrorResponse'
+      example:
+        success: false
+        error: Not Found
+        message: Resource with ID 123 not found
+        statusCode: 404
+
+ServerError:
+  description: Internal server error
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yml#/ErrorResponse'
+      example:
+        success: false
+        error: Internal Server Error
+        message: Something went wrong
+        statusCode: 500
+
+ValidationError:
+  description: Request validation failed
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yml#/ValidationError'
+      example:
+        success: false
+        error: Validation Error
+        message: Invalid input
+        statusCode: 400
