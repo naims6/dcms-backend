@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "prisma migrate deploy && tsc",
-    "docs": "swagger-cli bundle openapi/index.yml -o openapi/swagger.yml"
+    "docs": "swagger-cli bundle openapi/index.yml -o ./swagger.yml"
   },
   "keywords": [],
   "author": "",

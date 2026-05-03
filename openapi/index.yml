@@ -11,10 +11,8 @@ servers:
     description: Production Server
 
 tags:
+  - name: Admission
   - name: Authentication
-
-security:
-  - BearerAuth: []
 
 components:
   securitySchemes:
@@ -46,8 +44,22 @@ schemas:
     $ref: "./components/schemas/common.yml#/SuccessResponse"
 
 paths:
+  # admission routes
   /admission:
-    $ref: "./paths/admission.yml#/createAdmission"
+    post:
+      $ref: "./paths/admission.yml#/create-admission"
+  # admin routes for admission
+  /admissions:
+    get:
+      $ref: "./paths/admission.yml#/get-admissions"
+  /admission/{id}:
+    get:
+      $ref: "./paths/admission.yml#/get-admission"
+    patch:
+      $ref: "./paths/admission.yml#/update-admission"
+    delete:
+      $ref: "./paths/admission.yml#/delete-admission"
+  # auth routes
   /auth/login:
     $ref: "./paths/auth.yml#/login"
   /auth/forgot-password:
@@ -56,3 +68,9 @@ paths:
     $ref: "./paths/auth.yml#/reset-password"
   /auth/me:
     $ref: "./paths/auth.yml#/me"
+  /auth/logout:
+    $ref: "./paths/auth.yml#/logout"
+  /auth/send-otp:
+    $ref: "./paths/auth.yml#/send-otp"
+  /auth/verify-otp:
+    $ref: "./paths/auth.yml#/verify-otp"
