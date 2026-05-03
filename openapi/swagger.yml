@@ -546,6 +546,16 @@
           }
         }
       }
+    },
+    "/admission": {
+      "post": {
+        "tags": [
+          "Admissions"
+        ],
+        "summary": "New admission",
+        "description": "Create new admission",
+        "operationId": "createAdmission"
+      }
     }
   }
 }
