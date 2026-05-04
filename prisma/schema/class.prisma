@@ -3,7 +3,5 @@ model Class {
 
   name         String
   numericValue Int
-  section      String
-
   students     Student[]
 }
