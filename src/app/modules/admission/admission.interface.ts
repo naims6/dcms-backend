@@ -1,38 +1,36 @@
-import { Gender, Role } from "@prisma/client";
+import { Gender, GuardianRelation, Role } from "@prisma/client";
 
 export interface TAdmissionForm {
-  // User fields
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  gender: Gender;
-
-  // Student fields
+  fullName: string;
+  dateOfBirth: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  religion: string;
+  studentPhoto: string;
   classId: string;
-  rollNumber: string;
-  dateOfBirth: Date | string;
-  bloodGroup: string;
+  previousSchool: string;
+  previousClass: string;
+  previousGrade: string;
+
+  fatherName: string;
+  fatherOccupation: string;
+  fatherPhone: string;
+  motherName: string;
+  motherOccupation: string;
+  motherPhone: string;
   address: string;
-}
-
-export interface TAdmissionTable {
-  applicationId: string;
-}
-
-export interface TUser {
-  name: string;
+  city: string;
+  postalCode: string;
   email: string;
-  phone: string;
+  studentPhone: string;
+
+  agreeTerms: boolean;
   password: string;
-  gender: Gender;
-  role: Role;
+  confirmPassword: string;
 }
 
-export interface TStudent {
-  classId: string;
-  rollNumber: string;
-  dateOfBirth: Date | string;
-  bloodGroup: string;
-  address: string;
+export interface IClass {
+  id: string;
+  name: string;
+  numericValue: number;
 }

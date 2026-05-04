@@ -5,11 +5,9 @@ model Student {
   classId        String
 
   studentPhoto   String
-  classApplying  String
   previousSchool String
   previousClass  String
   previousGrade  String
-  admissionDate  DateTime?
   
   // contact information
   address        String

@@ -1,35 +1,25 @@
-import { Role } from "@prisma/client";
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../../utils/AppError";
 import { TAdmissionForm } from "./admission.interface";
 import { AdmissionRepository } from "./admission.repository";
-import { AdmissionHelpers } from "./admission.helper";
 
 const createAdmission = async (payload: TAdmissionForm) => {
-  const userData = {
-    name: payload.name,
-    email: payload.email,
-    phone: payload.phone,
-    password: payload.password,
-    gender: payload.gender,
-    role: Role.STUDENT,
-  };
+  // if agree terms not true
+  if (!payload.agreeTerms) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "Please agree to the terms and conditions",
+    );
+  }
+  // if password not matched
+  if (payload.password !== payload.confirmPassword) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "Password and confirm password do not match",
+    );
+  }
 
-  const studentData = {
-    classId: payload.classId,
-    rollNumber: payload.rollNumber,
-    dateOfBirth: payload.dateOfBirth,
-    bloodGroup: payload.bloodGroup,
-    address: payload.address,
-  };
-
-  const admissionData = {
-    applicationId: AdmissionHelpers.generateApplicationId(),
-  };
-
-  const result = await AdmissionRepository.createAdmission(
-    userData,
-    studentData,
-    admissionData,
-  );
+  const result = await AdmissionRepository.createAdmission(payload);
   return result;
 };
 
