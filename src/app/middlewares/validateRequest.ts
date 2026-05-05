@@ -15,6 +15,7 @@ const validateRequest = (schema: z.ZodTypeAny) => {
           errors: result.error.issues,
         });
       }
+      req.body = result.data
       next();
     } catch (error) {
       next(

@@ -25,13 +25,17 @@ class ApiResponse {
   static error(res: Response, error: any) {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Something went wrong";
-    const stack = error.stack || "";
 
-    return res.status(statusCode).json({
+    const response: { success: boolean; message: string; stack?: string } = {
       success: false,
       message,
-      stack,
-    });
+    };
+
+    if (process.env.NODE_ENV === "development") {
+      response.stack = error.stack || "";
+    }
+
+    return res.status(statusCode).json(response);
   }
 
   static paginated(

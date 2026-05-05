@@ -140,6 +140,7 @@ send-otp:
     tags: [Authentication]
     summary: Send OTP to user
     description: Send OTP to user for verification
+    operationId: sendOtp
     requestBody:
       required: true
       content:

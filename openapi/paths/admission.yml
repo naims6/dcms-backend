@@ -69,6 +69,8 @@ get-admission:
   operationId: getAdmission
   security:
     - BearerAuth: []
+  parameters:
+    - $ref: "../components/parameters/common.yml#/IdParam"
   responses:
     "200":
       description: Successful response
@@ -124,8 +126,6 @@ delete-admission:
     - BearerAuth: []
   parameters:
     - $ref: "../components/parameters/common.yml#/IdParam"
-      required: true
-      example: 1564565463
   responses:
     "200":
       description: Successful response

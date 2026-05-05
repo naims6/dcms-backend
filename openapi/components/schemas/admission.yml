@@ -1,5 +1,14 @@
 AdmissionRequest:
   type: object
+  required:
+    - gender
+    - firstName
+    - lastName
+    - className
+    - birthDate
+    - phone
+    - email
+    - address
   properties:
     gender:
       type: string
@@ -59,7 +68,7 @@ Admission:
     email:
       type: string
       format: email
-      example: [EMAIL_ADDRESS]
+      example: student@example.com
     address:
       type: string
       example: Dhaka, Bangladesh
