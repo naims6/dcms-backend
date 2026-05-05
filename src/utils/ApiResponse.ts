@@ -47,8 +47,8 @@ class ApiResponse {
     return res.status(StatusCodes.OK).json({
       success: true,
       message,
-      data,
       pagination,
+      data,
     });
   }
 }

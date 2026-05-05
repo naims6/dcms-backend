@@ -7,9 +7,6 @@ model Admission {
   status         AdmissionStatus   @default(PENDING)
 
   appliedDate    DateTime          @default(now())
-  approvedDate   DateTime?
-  rejectedDate   DateTime?
-
   student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])

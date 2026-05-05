@@ -1,5 +1,5 @@
 import { Server } from "http";
-import { prisma } from "./lib/prisma";
+import { prisma } from "./app/lib/prisma";
 import app from "./app";
 import config from "./config/env";
 

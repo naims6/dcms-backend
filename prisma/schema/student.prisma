@@ -8,11 +8,6 @@ model Student {
   previousSchool String
   previousClass  String
   previousGrade  String
-  
-  // contact information
-  address        String
-  city           String
-  postalCode     String
 
   user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   class          Class       @relation(fields: [classId], references: [id])

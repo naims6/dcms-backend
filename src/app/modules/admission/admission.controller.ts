@@ -15,6 +15,32 @@ const createAdmission = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const getAllAdmissions = catchAsync(async (req: Request, res: Response) => {
+  const query = req.query;
+
+  const result = await AdmissionService.getAllAdmission(query);
+  return ApiResponse.paginated(
+    res,
+    result.data,
+    result.meta,
+    "Admissions fetched successfully",
+  );
+});
+
+const getSingleAdmission = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.admissionId as string;
+  const result = await AdmissionService.getSingleAdmission(id);
+
+  return ApiResponse.success(
+    res,
+    result,
+    "Admission fetched successfully",
+    StatusCodes.OK,
+  );
+});
+
 export const AdmissionController = {
   createAdmission,
+  getAllAdmissions,
+  getSingleAdmission,
 };

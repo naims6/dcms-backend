@@ -1,0 +1,11 @@
+model Address {
+  id        String  @id @default(uuid())
+  address   String
+  city      String
+  postalCode String
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
