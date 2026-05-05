@@ -11,11 +11,11 @@ router.post(
   AdmissionController.createAdmission,
 );
 
-// admin rotes
-router.get("/", (req, res) => {
-  res.json({
-    message: "Admission list",
-  });
-});
+// admin routes
+router.get("/", AdmissionController.getAllAdmissions);
+
+router.get("/:admissionId", AdmissionController.getSingleAdmission);
+
+
 
 export const admissionRoutes = router;

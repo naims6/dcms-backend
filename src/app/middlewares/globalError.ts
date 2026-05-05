@@ -12,19 +12,9 @@ const globalError: ErrorRequestHandler = (
   let statusCode = err.statusCode || 500;
   let message = err.message || "Something went wrong";
 
-  const response: ErrorResponse = {
-    success: false,
-    message,
-  };
-
-  //   only for development environment, include stack and error details
-  if (process.env.NODE_ENV !== "production") {
-    response.stack = err.stack;
-    response.error = err;
-  }
-
   // Handle known Prisma client errors
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    console.log(err);
     switch (err.code) {
       case "P1000":
         message = "Authentication failed against the database server.";
@@ -153,6 +143,16 @@ const globalError: ErrorRequestHandler = (
     }
   }
 
+  const response: ErrorResponse = {
+    success: false,
+    message,
+  };
+
+  //   only for development environment, include stack and error details
+  if (process.env.NODE_ENV === "development") {
+    response.stack = err.stack;
+    response.error = err;
+  }
   res.status(statusCode).json(response);
 };
 

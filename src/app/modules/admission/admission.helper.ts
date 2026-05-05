@@ -1,9 +1,8 @@
-const generateApplicationId = () => {
-  const prefix = "APP-";
-  const randomSuffix = Math.floor(Math.random() * 1000000);
-  return `${prefix}${randomSuffix}`;
-};
+import { randomUUID } from "crypto";
 
+const generateApplicationId = () => {
+  return `APP-${randomUUID()}`;
+};
 export const AdmissionHelpers = {
   generateApplicationId,
 };

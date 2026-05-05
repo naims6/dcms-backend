@@ -4,3 +4,11 @@ export interface ErrorResponse {
   stack?: string;
   error?: string;
 }
+
+export interface TPaginationQuery {
+  page?: string;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: string;
+  search?: string;
+}
