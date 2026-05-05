@@ -18,6 +18,7 @@ model User {
   student   Student?
   teacher   Teacher?
   admin     Admin?
+  address   Address?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

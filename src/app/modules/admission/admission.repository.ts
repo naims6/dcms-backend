@@ -1,4 +1,4 @@
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 import { AdmissionHelpers } from "./admission.helper";
 import { TAdmissionForm } from "./admission.interface";
 import bcrypt from "bcrypt";
