@@ -7,7 +7,7 @@ export interface ErrorResponse {
 
 export interface TPaginationQuery {
   page?: string;
-  limit?: number;
+  limit?: string;
   sortBy?: string;
   sortOrder?: string;
   search?: string;

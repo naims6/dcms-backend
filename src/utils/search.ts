@@ -1,4 +1,6 @@
 const searchQuery = (searchTerm: string, fields: string[]) => {
+  if (!searchTerm.trim()) return [];
+
   const result = fields.map((field) => {
     return { [field]: { contains: searchTerm, mode: "insensitive" } };
   });

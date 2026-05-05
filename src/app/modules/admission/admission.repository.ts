@@ -141,6 +141,7 @@ const getAllAmission = async (query: TPaginationQuery) => {
         applicationId: true,
         student: {
           select: {
+            id: true,
             user: {
               select: {
                 id: true,
@@ -177,7 +178,7 @@ const getAllAmission = async (query: TPaginationQuery) => {
       id: admission.id,
       admissionId: admission.applicationId,
       student: {
-        id: admission.student.user.id,
+        id: admission.student.id,
         fullName: admission.student.user.fullName,
         gender: admission.student.user.gender,
         phone: admission.student.user.phone,
@@ -198,20 +199,13 @@ const getAllAmission = async (query: TPaginationQuery) => {
 
 // const get single admission
 const getSingleAdmission = async (id: string) => {
-  // check admission is exists or not
-  const admission = await prisma.admission.findUnique({
-    where: { id },
-  });
-  if (!admission) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Admission not found");
-  }
-
   const result = await prisma.admission.findUnique({
     where: { id },
     select: {
       applicationId: true,
       student: {
         select: {
+          id: true,
           user: {
             select: {
               id: true,
@@ -248,7 +242,7 @@ const getSingleAdmission = async (id: string) => {
   const transformedResult = {
     applicationId: result.applicationId,
     student: {
-      id: result.student.user.id,
+      id: result.student.id,
       fullName: result.student.user.fullName,
       gender: result.student.user.gender,
       phone: result.student.user.phone,
