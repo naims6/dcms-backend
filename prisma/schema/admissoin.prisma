@@ -10,8 +10,6 @@ model Admission {
   approvedDate   DateTime?
   rejectedDate   DateTime?
 
-  remarks        String?
-
   student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])

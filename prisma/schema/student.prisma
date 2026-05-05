@@ -4,13 +4,15 @@ model Student {
   userId         String      @unique
   classId        String
 
-  rollNumber     String
-
-  dateOfBirth    DateTime
-  bloodGroup     String?
-  address        String?
-
-  admissionDate  DateTime?
+  studentPhoto   String
+  previousSchool String
+  previousClass  String
+  previousGrade  String
+  
+  // contact information
+  address        String
+  city           String
+  postalCode     String
 
   user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   class          Class       @relation(fields: [classId], references: [id])
@@ -22,8 +24,5 @@ model Student {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
-  @@unique([classId, rollNumber])
-
   @@index([classId])
-  @@index([rollNumber])
 }

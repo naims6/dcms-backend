@@ -1,19 +1,10 @@
-
 model Guardian {
   id           String             @id @default(uuid())
-
   studentId    String
-
   name         String
   relation     GuardianRelation
-
   phone        String
-  email        String?
-
-  occupation   String?
+  occupation   String
 
   student      Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  @@index([studentId])
-  @@index([phone])
 }

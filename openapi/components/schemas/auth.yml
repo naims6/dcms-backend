@@ -91,3 +91,56 @@ ResetPasswordRequest:
     confirmPassword:
       type: string
       format: password
+
+LogoutResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    message:
+      type: string
+      example: User logged out successfully
+
+SendOtpRequest:
+  type: object
+  required:
+    - identifier
+  properties:
+    identifier:
+      type: string
+      description: Email or phone number
+      example: student@example.com
+
+VerifyOtpRequest:
+  type: object
+  required:
+    - identifier
+    - otp
+  properties:
+    identifier:
+      type: string
+      description: Email or phone number
+      example: naimsorker6@gmail.com
+    otp:
+      type: string
+      description: OTP code
+      example: 356877
+
+VerifyOtpResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    data:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIs...
+        expiresIn:
+          type: integer
+          example: 86400
+        user:
+          $ref: "#/UserProfile"

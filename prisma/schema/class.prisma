@@ -1,9 +1,7 @@
 model Class {
   id           String    @id @default(uuid())
 
-  name         String
-  numericValue Int
-  section      String
-
+  name         String    @unique
+  numericValue Int       @unique
   students     Student[]
 }
