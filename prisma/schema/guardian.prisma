@@ -7,4 +7,6 @@ model Guardian {
   occupation   String
 
   student      Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, relation])
 }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-const bdPhone = z
+export const bdPhone = z
   .string()
   .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number");
 
