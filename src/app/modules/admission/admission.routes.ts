@@ -29,4 +29,6 @@ router.patch(
   AdmissionController.activeStudent,
 );
 
+router.patch("/reject-application/:id", authorize(["ADMIN"]), AdmissionController.rejectApplication);
+
 export const admissionRoutes = router;

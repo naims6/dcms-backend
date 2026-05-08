@@ -51,9 +51,22 @@ const activeStudent = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const rejectApplication = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await AdmissionService.rejectApplication(id);
+
+  return ApiResponse.success(
+    res,
+    result,
+    "Application rejected successfully",
+    StatusCodes.OK,
+  );
+});
+
 export const AdmissionController = {
   createAdmission,
   getAllAdmissions,
   getSingleAdmission,
   activeStudent,
+  rejectApplication,
 };

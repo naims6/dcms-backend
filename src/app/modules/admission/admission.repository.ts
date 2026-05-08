@@ -297,17 +297,52 @@ const activeStudent = async (id: string) => {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
-  const result = await prisma.user.update({
+  const result = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.update({
+      where: {
+        id,
+      },
+      data: {
+        isActive: true,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        student: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!user.student?.id) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Student not found");
+    }
+
+    await tx.admission.update({
+      where: {
+        studentId: user.student.id,
+      },
+      data: {
+        status: "APPROVED",
+      },
+    });
+
+    return user;
+  });
+
+  return result;
+};
+
+const rejectApplication = async (id: string) => {
+  const result = await prisma.admission.update({
     where: {
       id,
     },
     data: {
-      isActive: true,
-    },
-    select: {
-      id: true,
-      isActive: true,
-      isVerified: true,
+      status: "REJECTED",
     },
   });
 
@@ -320,4 +355,5 @@ export const AdmissionRepository = {
   getAllAmission,
   getSingleAdmission,
   activeStudent,
+  rejectApplication,
 };

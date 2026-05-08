@@ -61,9 +61,15 @@ const activeStudent = async (id: string) => {
   return result;
 };
 
+const rejectApplication = async (id: string) => {
+  const result = await AdmissionRepository.rejectApplication(id);
+  return result;
+};
+
 export const AdmissionService = {
   createAdmission,
   getAllAdmission,
   getSingleAdmission,
-  activeStudent
+  activeStudent,
+  rejectApplication,
 };

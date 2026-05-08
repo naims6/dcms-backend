@@ -1,10 +1,18 @@
 const searchQuery = (searchTerm: string, fields: string[]) => {
-  if (!searchTerm.trim()) return undefined;
+  if (!searchTerm?.trim()) return undefined;
 
-  const result = fields.map((field) => {
-    return { [field]: { contains: searchTerm, mode: "insensitive" } };
-  });
-  return result;
+  // Sanitize and validate
+  const sanitizedTerm = searchTerm
+    .replace(/[<>%'"\\;]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .substring(0, 100);
+
+  if (!sanitizedTerm) return undefined;
+
+  return fields.map((field) => ({
+    [field]: { contains: sanitizedTerm, mode: "insensitive" },
+  }));
 };
 
 export default searchQuery;

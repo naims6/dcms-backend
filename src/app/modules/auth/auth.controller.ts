@@ -12,14 +12,14 @@ const login = catchAsync(async (req: Request, res: Response) => {
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "strict" : "lax",
+    sameSite: "strict",
     maxAge: 1000 * 60 * 60,
   });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "strict" : "lax",
+    sameSite: "strict",
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 

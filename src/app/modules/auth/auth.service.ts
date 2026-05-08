@@ -43,6 +43,15 @@ const login = async (payload: TLogin) => {
     throw new AppError(StatusCodes.FORBIDDEN, "Account not verified");
   }
 
+  // Add to auth.service.ts login function
+  const admission = await prisma.admission.findFirst({
+    where: { student: { userId: user.id } },
+  });
+
+  if (!admission || admission.status !== "APPROVED") {
+    throw new AppError(StatusCodes.FORBIDDEN, "Admission not approved");
+  }
+
   //   check password
   const isMatched = await AuthHelper.checkPassword(
     payload.password,
@@ -190,7 +199,6 @@ const resendVerificationOtp = async (email: string) => {
 
 const refreshToken = async (refreshToken: string) => {
   const payload = AuthHelper.verifyRefreshToken(refreshToken);
-  console.log(payload);
 
   if (!payload) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh token is invalid");
@@ -305,7 +313,6 @@ const changePassword = async (payload: TChangePassword, userId: string) => {
 
 const logout = async (refreshToken: string) => {
   const payload = AuthHelper.verifyRefreshToken(refreshToken);
-  console.log(payload);
 
   if (!payload) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
