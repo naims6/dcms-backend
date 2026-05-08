@@ -20,11 +20,20 @@ export const resendVerificationEmailSchema = z.object({
   email: z.email("Invalid email"),
 });
 
-export const changePasswordSchema = z.object({
-  oldPassword: z.string().min(1, "Old password is required"),
-  newPassword: z.string().min(1, "New password is required"),
-  confirmPassword: z.string().min(1, "Confirm password is required"),
-});
+export const changePasswordSchema = z
+  .object({
+    oldPassword: z.string().min(1, "Old password is required"),
+    newPassword: z.string().min(1, "New password is required"),
+    confirmPassword: z.string().min(1, "Confirm password is required"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: "New password must be different from old password",
+    path: ["newPassword"],
+  });
 
 export type TLogin = z.infer<typeof loginSchema>;
 export type TVerifyEmail = z.infer<typeof verifyEmailSchema>;

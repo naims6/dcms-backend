@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import { AdmissionHelpers } from "./admission.helper";
 import { TAdmissionForm } from "./admission.interface";
 import bcrypt from "bcrypt";
-import { Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
+import { AdmissionStatus, Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
 import AppError from "../../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types";
@@ -326,7 +326,7 @@ const activeStudent = async (id: string) => {
         studentId: user.student.id,
       },
       data: {
-        status: "APPROVED",
+        status: AdmissionStatus.APPROVED,
       },
     });
 
@@ -342,7 +342,7 @@ const rejectApplication = async (id: string) => {
       id,
     },
     data: {
-      status: "REJECTED",
+      status: AdmissionStatus.REJECTED,
     },
   });
 

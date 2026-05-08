@@ -1,4 +1,5 @@
-import { TJWTPayload } from "../app/modules/auth/auth.types";
+import { TJWTPayload } from ".";
+
 
 declare global {
   namespace Express {

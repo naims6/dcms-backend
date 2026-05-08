@@ -32,7 +32,7 @@ router.patch(
   AuthController.changePassword,
 );
 
-router.post("/refresh-token", isAuthanticated, AuthController.refreshToken);
+router.post("/refresh-token", AuthController.refreshToken);
 
 router.post("/logout", isAuthanticated, AuthController.logout);
 
