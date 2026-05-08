@@ -1,7 +1,13 @@
 import { Router } from "express";
 import validateRequest from "../../middlewares/validateRequest";
-import { loginSchema, resendVerificationEmailSchema, verifyEmailSchema } from "./auth.validation";
+import {
+  changePasswordSchema,
+  loginSchema,
+  resendVerificationEmailSchema,
+  verifyEmailSchema,
+} from "./auth.validation";
 import { AuthController } from "./auth.controller";
+import isAuthanticated from "../../middlewares/isAuthenticated";
 
 const router: Router = Router();
 
@@ -19,6 +25,15 @@ router.post(
   AuthController.resendVerificationOtp,
 );
 
-router.post("/logout", AuthController.logout)
+router.patch(
+  "/change-password",
+  isAuthanticated,
+  validateRequest(changePasswordSchema),
+  AuthController.changePassword,
+);
+
+router.post("/refresh-token", isAuthanticated, AuthController.refreshToken);
+
+router.post("/logout", isAuthanticated, AuthController.logout);
 
 export const AuthRoutes = router;

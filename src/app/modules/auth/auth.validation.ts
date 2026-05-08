@@ -20,8 +20,15 @@ export const resendVerificationEmailSchema = z.object({
   email: z.email("Invalid email"),
 });
 
+export const changePasswordSchema = z.object({
+  oldPassword: z.string().min(1, "Old password is required"),
+  newPassword: z.string().min(1, "New password is required"),
+  confirmPassword: z.string().min(1, "Confirm password is required"),
+});
+
 export type TLogin = z.infer<typeof loginSchema>;
 export type TVerifyEmail = z.infer<typeof verifyEmailSchema>;
 export type TResendVerificationEmail = z.infer<
   typeof resendVerificationEmailSchema
 >;
+export type TChangePassword = z.infer<typeof changePasswordSchema>;
