@@ -16,6 +16,6 @@ router.get("/", AdmissionController.getAllAdmissions);
 
 router.get("/:admissionId", AdmissionController.getSingleAdmission);
 
-
+router.patch("/active-student/:id", AdmissionController.activeStudent);
 
 export const admissionRoutes = router;

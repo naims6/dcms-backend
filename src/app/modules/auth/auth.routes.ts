@@ -6,6 +6,7 @@ import { AuthController } from "./auth.controller";
 const router: Router = Router();
 
 router.post("/login", validateRequest(loginSchema), AuthController.login);
+
 router.post(
   "/verify-email",
   validateRequest(verifyEmailSchema),
@@ -17,5 +18,7 @@ router.post(
   validateRequest(resendVerificationEmailSchema),
   AuthController.resendVerificationOtp,
 );
+
+router.post("/logout", AuthController.logout)
 
 export const AuthRoutes = router;

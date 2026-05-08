@@ -35,9 +35,9 @@ const login = async (payload: TLogin) => {
 
   //   if account is not active
 
-  // if (!user.isActive) {
-  //   throw new AppError(StatusCodes.FORBIDDEN, "Account not active");
-  // }
+  if (!user.isActive) {
+    throw new AppError(StatusCodes.FORBIDDEN, "Account not active");
+  }
 
   if (!user.isVerified) {
     throw new AppError(StatusCodes.FORBIDDEN, "Account not verified");
@@ -60,8 +60,11 @@ const login = async (payload: TLogin) => {
   };
 
   const accessToken = AuthHelper.createAccessToken(JWTPayload);
-  const refreshToken = AuthHelper.createRefreshToken(JWTPayload);
   const sessionId = AuthHelper.generateSessionId();
+  const refreshToken = AuthHelper.createRefreshToken({
+    userId: user.id,
+    sessionId: sessionId,
+  });
 
   await prisma.session.create({
     data: {
@@ -97,19 +100,19 @@ const verifyEmail = async (payload: TVerifyEmail) => {
       },
     },
   });
-  console.log(otp);
+
   if (!otp) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
-  }
-
-  if (otp.expiresIn < new Date()) {
-    throw new AppError(StatusCodes.UNAUTHORIZED, "OTP expired");
   }
 
   const isMatched = await AuthHelper.checkOTP(payload.otp, otp.hashOtp);
 
   if (!isMatched) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid otp");
+  }
+
+  if (otp.expiresIn < new Date()) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "OTP expired");
   }
 
   // update isVerified
@@ -185,8 +188,36 @@ const resendVerificationOtp = async (email: string) => {
   return result;
 };
 
+const logout = async (refreshToken: string) => {
+  const payload = AuthHelper.verifyRefreshToken(refreshToken);
+  console.log(payload);
+
+  if (!payload) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const session = await prisma.session.findUnique({
+    where: {
+      sessionId: payload.sessionId,
+    },
+  });
+
+  if (!session) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const result = await prisma.session.delete({
+    where: {
+      sessionId: payload.sessionId,
+    },
+  });
+
+  return result;
+};
+
 export const AuthService = {
   login,
   verifyEmail,
   resendVerificationOtp,
+  logout,
 };

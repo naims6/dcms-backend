@@ -39,8 +39,21 @@ const getSingleAdmission = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const activeStudent = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await AdmissionService.activeStudent(id);
+
+  return ApiResponse.success(
+    res,
+    result,
+    "Student activated successfully",
+    StatusCodes.OK,
+  );
+});
+
 export const AdmissionController = {
   createAdmission,
   getAllAdmissions,
   getSingleAdmission,
+  activeStudent,
 };

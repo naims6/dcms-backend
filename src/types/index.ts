@@ -21,4 +21,9 @@ export type TJWTPayload = {
   email: string;
 };
 
+export interface IRefreshTokenPayload {
+  sessionId: string;
+  userId: string;
+}
+
 export type PrismaClientOrTx = PrismaClient | Prisma.TransactionClient;

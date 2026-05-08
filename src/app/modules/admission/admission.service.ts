@@ -56,8 +56,14 @@ const getSingleAdmission = async (id: string) => {
   return result;
 };
 
+const activeStudent = async (id: string) => {
+  const result = await AdmissionRepository.activeStudent(id);
+  return result;
+};
+
 export const AdmissionService = {
   createAdmission,
   getAllAdmission,
   getSingleAdmission,
+  activeStudent
 };

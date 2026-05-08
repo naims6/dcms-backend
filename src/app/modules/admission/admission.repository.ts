@@ -196,8 +196,8 @@ const getAllAmission = async (query: TPaginationQuery) => {
 
   const transformedResult = result.map((admission) => {
     return {
-      id: admission.id,
       admissionId: admission.applicationId,
+      userId: admission.student.user.id,
       student: {
         id: admission.student.id,
         fullName: admission.student.user.fullName,
@@ -287,9 +287,37 @@ const getSingleAdmission = async (id: string) => {
   return transformedResult;
 };
 
+// active student
+const activeStudent = async (id: string) => {
+  const isUserExists = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!isUserExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "User not found");
+  }
+
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      isActive: true,
+    },
+    select: {
+      id: true,
+      isActive: true,
+      isVerified: true,
+    },
+  });
+
+  return result;
+};
+
 export const AdmissionRepository = {
   createAdmission,
   getUserByEmailOrPhone,
   getAllAmission,
   getSingleAdmission,
+  activeStudent,
 };
