@@ -1,9 +1,14 @@
 import { randomUUID } from "crypto";
 import { renderEmailTemplate } from "../../../utils/renderEmailTemplate";
 import { sendEmail } from "../../../utils/sendEmail";
+import bcrypt from "bcrypt";
 
 const generateApplicationId = () => {
   return `APP-${randomUUID()}`;
+};
+
+const hashOTP = async (otp: string) => {
+  return bcrypt.hash(otp, 10);
 };
 
 const generateVerifyOTP = () => {
@@ -34,4 +39,5 @@ export const AdmissionHelpers = {
   generateApplicationId,
   sendVerificationEmail,
   generateVerifyOTP,
+  hashOTP,
 };

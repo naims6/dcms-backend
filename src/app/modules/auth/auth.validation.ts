@@ -11,4 +11,14 @@ export const loginSchema = z
     path: ["email", "phone"],
   });
 
+export const verifyEmailSchema = z.object({
+  email: z.email("Invalid email"),
+  otp: z.string().min(1, "OTP is required"),
+});
+
+export const resendVerificationEmailSchema = z.object({
+  email: z.email("Invalid email"),
+});
+
 export type TLogin = z.infer<typeof loginSchema>;
+export type TVerifyEmail = z.infer<typeof verifyEmailSchema>;

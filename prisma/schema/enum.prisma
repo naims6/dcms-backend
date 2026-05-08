@@ -41,3 +41,8 @@ enum PaymentPurpose {
   TRANSPORT
   OTHER
 }
+
+enum OtpType {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}

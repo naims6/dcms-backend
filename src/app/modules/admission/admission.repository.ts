@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import { AdmissionHelpers } from "./admission.helper";
 import { TAdmissionForm } from "./admission.interface";
 import bcrypt from "bcrypt";
-import { Gender, GuardianRelation, Role } from "@prisma/client";
+import { Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
 import AppError from "../../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types";
@@ -22,6 +22,7 @@ const getUserByEmailOrPhone = async (email: string, phone: string) => {
 const createAdmission = async (payload: TAdmissionForm) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
   const otp = AdmissionHelpers.generateVerifyOTP();
+  const hashOtp = await AdmissionHelpers.hashOTP(otp);
 
   const userData = {
     fullName: payload.fullName,
@@ -69,7 +70,8 @@ const createAdmission = async (payload: TAdmissionForm) => {
   };
 
   const otpData = {
-    otp,
+    hashOtp,
+    type: OtpType.VERIFY_EMAIL,
     expiresIn: new Date(Date.now() + 5 * 60 * 1000),
   };
 

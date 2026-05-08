@@ -37,17 +37,19 @@ model Session {
   refreshToken String   @unique
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model Otp {
   id        String   @id @default(uuid())
-  otp       String
+  hashOtp   String
   expiresIn DateTime
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  type      OtpType
 
-  @@index([userId])
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
 }

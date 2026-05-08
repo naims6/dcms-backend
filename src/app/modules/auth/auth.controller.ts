@@ -29,6 +29,16 @@ const login = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.verifyEmail(req.body);
+  ApiResponse.success(
+    res,
+    result,
+    "User verified successfully",
+  );
+});
+
 export const AuthController = {
   login,
+  verifyEmail,
 };

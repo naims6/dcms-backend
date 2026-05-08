@@ -20,9 +20,14 @@ const generateSessionId = () => {
   return crypto.randomBytes(36).toString("hex");
 };
 
+const checkOTP = async (otp: string, hashOtp: string) => {
+  return await bcrypt.compare(otp, hashOtp);
+};
+
 export const AuthHelper = {
   checkPassword,
   createAccessToken,
   createRefreshToken,
-  generateSessionId
+  generateSessionId,
+  checkOTP,
 };

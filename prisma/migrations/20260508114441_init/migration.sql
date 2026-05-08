@@ -16,6 +16,20 @@ CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 -- CreateEnum
 CREATE TYPE "PaymentPurpose" AS ENUM ('ADMISSION', 'MONTHLY', 'EXAM', 'TRANSPORT', 'OTHER');
 
+-- CreateEnum
+CREATE TYPE "OtpType" AS ENUM ('VERIFY_EMAIL', 'RESET_PASSWORD');
+
+-- CreateTable
+CREATE TABLE "Address" (
+    "id" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "Admin" (
     "id" TEXT NOT NULL,
@@ -33,8 +47,6 @@ CREATE TABLE "Admission" (
     "applicationId" TEXT NOT NULL,
     "status" "AdmissionStatus" NOT NULL DEFAULT 'PENDING',
     "appliedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "approvedDate" TIMESTAMP(3),
-    "rejectedDate" TIMESTAMP(3),
 
     CONSTRAINT "Admission_pkey" PRIMARY KEY ("id")
 );
@@ -107,14 +119,9 @@ CREATE TABLE "Student" (
     "userId" TEXT NOT NULL,
     "classId" TEXT NOT NULL,
     "studentPhoto" TEXT NOT NULL,
-    "classApplying" TEXT NOT NULL,
     "previousSchool" TEXT NOT NULL,
     "previousClass" TEXT NOT NULL,
     "previousGrade" TEXT NOT NULL,
-    "admissionDate" TIMESTAMP(3),
-    "address" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "postalCode" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -146,11 +153,40 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "Session" (
+    "id" TEXT NOT NULL,
+    "sessionId" TEXT NOT NULL,
+    "expiresIn" TIMESTAMP(3) NOT NULL,
+    "refreshToken" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Otp" (
+    "id" TEXT NOT NULL,
+    "hashOtp" TEXT NOT NULL,
+    "expiresIn" TIMESTAMP(3) NOT NULL,
+    "type" "OtpType" NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Otp_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Address_userId_key" ON "Address"("userId");
+
+-- CreateIndex
+CREATE INDEX "Address_userId_idx" ON "Address"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Admin_userId_key" ON "Admin"("userId");
@@ -169,6 +205,9 @@ CREATE UNIQUE INDEX "Class_name_key" ON "Class"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Class_numericValue_key" ON "Class"("numericValue");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Guardian_studentId_relation_key" ON "Guardian"("studentId", "relation");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Payment_transactionId_key" ON "Payment"("transactionId");
@@ -206,6 +245,24 @@ CREATE INDEX "User_role_idx" ON "User"("role");
 -- CreateIndex
 CREATE INDEX "User_email_idx" ON "User"("email");
 
+-- CreateIndex
+CREATE INDEX "User_phone_idx" ON "User"("phone");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Session_sessionId_key" ON "Session"("sessionId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Session_refreshToken_key" ON "Session"("refreshToken");
+
+-- CreateIndex
+CREATE INDEX "Session_userId_idx" ON "Session"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Otp_userId_type_key" ON "Otp"("userId", "type");
+
+-- AddForeignKey
+ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE "Admin" ADD CONSTRAINT "Admin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -226,3 +283,9 @@ ALTER TABLE "Student" ADD CONSTRAINT "Student_classId_fkey" FOREIGN KEY ("classI
 
 -- AddForeignKey
 ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Otp" ADD CONSTRAINT "Otp_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
