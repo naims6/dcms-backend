@@ -22,3 +22,6 @@ export const resendVerificationEmailSchema = z.object({
 
 export type TLogin = z.infer<typeof loginSchema>;
 export type TVerifyEmail = z.infer<typeof verifyEmailSchema>;
+export type TResendVerificationEmail = z.infer<
+  typeof resendVerificationEmailSchema
+>;
