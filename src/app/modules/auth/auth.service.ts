@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../../utils/AppError";
 import { prisma } from "../../lib/prisma";
-import { TLogin, TVerifyEmail } from "./auth.validation";
+import { TChangePassword, TLogin, TVerifyEmail } from "./auth.validation";
 import { TJWTPayload } from "../../../types";
 import { AuthHelper } from "./auth.helper";
 import { OtpType } from "@prisma/client";
@@ -35,9 +35,9 @@ const login = async (payload: TLogin) => {
 
   //   if account is not active
 
-  // if (!user.isActive) {
-  //   throw new AppError(StatusCodes.FORBIDDEN, "Account not active");
-  // }
+  if (!user.isActive) {
+    throw new AppError(StatusCodes.FORBIDDEN, "Account not active");
+  }
 
   if (!user.isVerified) {
     throw new AppError(StatusCodes.FORBIDDEN, "Account not verified");
@@ -60,8 +60,11 @@ const login = async (payload: TLogin) => {
   };
 
   const accessToken = AuthHelper.createAccessToken(JWTPayload);
-  const refreshToken = AuthHelper.createRefreshToken(JWTPayload);
   const sessionId = AuthHelper.generateSessionId();
+  const refreshToken = AuthHelper.createRefreshToken({
+    userId: user.id,
+    sessionId: sessionId,
+  });
 
   await prisma.session.create({
     data: {
@@ -97,19 +100,19 @@ const verifyEmail = async (payload: TVerifyEmail) => {
       },
     },
   });
-  console.log(otp);
+
   if (!otp) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
-  }
-
-  if (otp.expiresIn < new Date()) {
-    throw new AppError(StatusCodes.UNAUTHORIZED, "OTP expired");
   }
 
   const isMatched = await AuthHelper.checkOTP(payload.otp, otp.hashOtp);
 
   if (!isMatched) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid otp");
+  }
+
+  if (otp.expiresIn < new Date()) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "OTP expired");
   }
 
   // update isVerified
@@ -185,8 +188,161 @@ const resendVerificationOtp = async (email: string) => {
   return result;
 };
 
+const refreshToken = async (refreshToken: string) => {
+  const payload = AuthHelper.verifyRefreshToken(refreshToken);
+
+  if (!payload) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh token is invalid");
+  }
+
+  const session = await prisma.session.findUnique({
+    where: {
+      sessionId: payload.sessionId,
+    },
+    select: {
+      id: true,
+      sessionId: true,
+      expiresIn: true,
+      refreshToken: true,
+      user: {
+        select: {
+          id: true,
+          email: true,
+          role: true,
+        },
+      },
+    },
+  });
+
+  if (!session) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh token is invalid");
+  }
+
+  if (session.expiresIn < new Date()) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh token is expired");
+  }
+
+  const user = session.user;
+
+  const JWTPayload = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const newAccessToken = AuthHelper.createAccessToken(JWTPayload);
+  const newRefreshToken = AuthHelper.createRefreshToken({
+    userId: user.id,
+    sessionId: session.sessionId,
+  });
+
+  // update session with new refresh token
+  await prisma.session.update({
+    where: {
+      sessionId: session.sessionId,
+    },
+    data: {
+      refreshToken: newRefreshToken,
+      expiresIn: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000),
+    },
+  });
+
+  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+};
+
+const changePassword = async (payload: TChangePassword, userId: string) => {
+  const { oldPassword, newPassword, confirmPassword } = payload;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const isMatched = await AuthHelper.checkPassword(oldPassword, user.password);
+
+  if (!isMatched) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Old password is incorrect");
+  }
+
+  if (newPassword !== confirmPassword) {
+    throw new AppError(
+      StatusCodes.UNAUTHORIZED,
+      "New password and confirm password do not match",
+    );
+  }
+
+  if (oldPassword === newPassword) {
+    throw new AppError(
+      StatusCodes.UNAUTHORIZED,
+      "New password and old password are same",
+    );
+  }
+
+  const hashPassword = await bcrypt.hash(newPassword, 10);
+
+  const result = prisma.$transaction(async (tx) => {
+    const result = await tx.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashPassword,
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    await tx.session.deleteMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return result;
+  });
+
+  return user;
+};
+
+const logout = async (refreshToken: string) => {
+  const payload = AuthHelper.verifyRefreshToken(refreshToken);
+
+  if (!payload) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const session = await prisma.session.findUnique({
+    where: {
+      sessionId: payload.sessionId,
+    },
+  });
+
+  if (!session) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const result = await prisma.session.delete({
+    where: {
+      sessionId: payload.sessionId,
+    },
+  });
+
+  return result;
+};
+
 export const AuthService = {
   login,
   verifyEmail,
+  refreshToken,
+  changePassword,
   resendVerificationOtp,
+  logout,
 };

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import config from "../../../config/env";
 import jwt from "jsonwebtoken";
-import { TJWTPayload } from "../../../types";
+import { IRefreshTokenPayload, TJWTPayload } from "../../../types";
 import crypto from "crypto";
 
 const checkPassword = async (password: string, hashPassword: string) => {
@@ -12,8 +12,16 @@ const createAccessToken = (payload: TJWTPayload) => {
   return jwt.sign(payload, config.jwt_secret, { expiresIn: "1d" });
 };
 
-const createRefreshToken = (payload: TJWTPayload) => {
-  return jwt.sign(payload, config.jwt_secret, { expiresIn: "7d" });
+const createRefreshToken = (payload: IRefreshTokenPayload) => {
+  return jwt.sign(payload, config.refresh_jwt_secret, { expiresIn: "7d" });
+};
+
+const verifyAccessToken = (token: string) => {
+  return jwt.verify(token, config.jwt_secret) as TJWTPayload;
+};
+
+const verifyRefreshToken = (token: string) => {
+  return jwt.verify(token, config.refresh_jwt_secret) as IRefreshTokenPayload;
 };
 
 const generateSessionId = () => {
@@ -30,4 +38,6 @@ export const AuthHelper = {
   createRefreshToken,
   generateSessionId,
   checkOTP,
+  verifyAccessToken,
+  verifyRefreshToken,
 };

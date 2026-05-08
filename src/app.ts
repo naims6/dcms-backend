@@ -6,6 +6,7 @@ import globalError from "./app/middlewares/globalError";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import YAML from "yaml";
+import cookieParser from "cookie-parser";
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(parsedYaml));
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // base route
 app.use("/api/v1", router);

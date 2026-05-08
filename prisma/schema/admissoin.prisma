@@ -1,7 +1,7 @@
 model Admission {
   id String @id @default(uuid())
 
-  studentId     String
+  studentId     String @unique
   applicationId String @unique
 
   status AdmissionStatus @default(PENDING)

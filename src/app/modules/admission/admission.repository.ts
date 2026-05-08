@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import { AdmissionHelpers } from "./admission.helper";
 import { TAdmissionForm } from "./admission.interface";
 import bcrypt from "bcrypt";
-import { Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
+import { AdmissionStatus, Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
 import AppError from "../../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types";
@@ -196,8 +196,8 @@ const getAllAmission = async (query: TPaginationQuery) => {
 
   const transformedResult = result.map((admission) => {
     return {
-      id: admission.id,
       admissionId: admission.applicationId,
+      userId: admission.student.user.id,
       student: {
         id: admission.student.id,
         fullName: admission.student.user.fullName,
@@ -287,9 +287,73 @@ const getSingleAdmission = async (id: string) => {
   return transformedResult;
 };
 
+// active student
+const activeStudent = async (id: string) => {
+  const isUserExists = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!isUserExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, "User not found");
+  }
+
+  const result = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.update({
+      where: {
+        id,
+      },
+      data: {
+        isActive: true,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        student: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!user.student?.id) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Student not found");
+    }
+
+    await tx.admission.update({
+      where: {
+        studentId: user.student.id,
+      },
+      data: {
+        status: AdmissionStatus.APPROVED,
+      },
+    });
+
+    return user;
+  });
+
+  return result;
+};
+
+const rejectApplication = async (id: string) => {
+  const result = await prisma.admission.update({
+    where: {
+      id,
+    },
+    data: {
+      status: AdmissionStatus.REJECTED,
+    },
+  });
+
+  return result;
+};
+
 export const AdmissionRepository = {
   createAdmission,
   getUserByEmailOrPhone,
   getAllAmission,
   getSingleAdmission,
+  activeStudent,
+  rejectApplication,
 };
