@@ -1,7 +1,7 @@
 model Address {
-  id        String  @id @default(uuid())
-  address   String
-  city      String
+  id         String @id @default(uuid())
+  address    String
+  city       String
   postalCode String
 
   userId String @unique

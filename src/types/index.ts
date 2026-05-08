@@ -15,4 +15,10 @@ export interface TPaginationQuery {
   search?: string;
 }
 
+export type TJWTPayload = {
+  id: string;
+  role: string;
+  email: string;
+};
+
 export type PrismaClientOrTx = PrismaClient | Prisma.TransactionClient;

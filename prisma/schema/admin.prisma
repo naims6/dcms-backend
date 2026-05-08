@@ -1,10 +1,10 @@
 model Admin {
-  id            String    @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId        String    @unique
+  userId String @unique
 
-  designation   String
-  joiningDate   DateTime
+  designation String
+  joiningDate DateTime
 
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

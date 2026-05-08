@@ -1,13 +1,13 @@
 model Admission {
-  id             String            @id @default(uuid())
+  id String @id @default(uuid())
 
-  studentId      String
-  applicationId  String            @unique
+  studentId     String
+  applicationId String @unique
 
-  status         AdmissionStatus   @default(PENDING)
+  status AdmissionStatus @default(PENDING)
 
-  appliedDate    DateTime          @default(now())
-  student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  appliedDate DateTime @default(now())
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])
   @@index([status])

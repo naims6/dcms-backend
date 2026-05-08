@@ -42,6 +42,7 @@ const createAdmission = async (payload: TAdmissionForm) => {
   }
 
   const result = await AdmissionRepository.createAdmission(payload);
+  
   return result;
 };
 

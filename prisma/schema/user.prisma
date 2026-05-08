@@ -1,28 +1,53 @@
 model User {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  fullName      String
-  dateOfBirth   DateTime
-  gender        Gender
-  bloodGroup    String
-  religion      String
+  fullName    String
+  dateOfBirth DateTime
+  gender      Gender
+  bloodGroup  String
+  religion    String
 
-  email         String   @unique
-  phone         String   @unique
-  password      String
+  email    String @unique
+  phone    String @unique
+  password String
 
-  role      Role
+  role     Role
+  isActive  Boolean @default(false)
+  isVerified Boolean @default(false)
 
-  isActive  Boolean  @default(false)
+  student Student?
+  teacher Teacher?
+  admin   Admin?
+  address Address?
 
-  student   Student?
-  teacher   Teacher?
-  admin     Admin?
-  address   Address?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  otp       Otp[]
 
   @@index([role])
   @@index([email])
+  @@index([phone])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionId    String   @unique
+  expiresIn    DateTime
+  refreshToken String   @unique
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  otp       String
+  expiresIn DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
