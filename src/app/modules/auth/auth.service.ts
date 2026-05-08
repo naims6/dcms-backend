@@ -5,6 +5,9 @@ import { TLogin, TVerifyEmail } from "./auth.validation";
 import { TJWTPayload } from "../../../types";
 import { AuthHelper } from "./auth.helper";
 import { OtpType } from "@prisma/client";
+import { generateVerifyOTP } from "../../../utils/otp";
+import bcrypt from "bcrypt";
+import { sendVerificationEmail } from "../../../utils/sendVerificationEmail";
 
 const login = async (payload: TLogin) => {
   if (!payload.email && !payload.phone) {
@@ -94,7 +97,7 @@ const verifyEmail = async (payload: TVerifyEmail) => {
       },
     },
   });
-
+  console.log(otp);
   if (!otp) {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
@@ -135,7 +138,55 @@ const verifyEmail = async (payload: TVerifyEmail) => {
   return result;
 };
 
+const resendVerificationOtp = async (email: string) => {
+  const otp = generateVerifyOTP();
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+      fullName: true,
+      email: true,
+    },
+  });
+
+  if (!user) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const hashOtp = await bcrypt.hash(otp, 10);
+
+  const result = await prisma.otp.upsert({
+    where: {
+      userId_type: {
+        userId: user.id,
+        type: OtpType.VERIFY_EMAIL,
+      },
+    },
+    update: {
+      hashOtp: hashOtp,
+      expiresIn: new Date(Date.now() + 5 * 60 * 1000),
+    },
+    create: {
+      userId: user.id,
+      type: OtpType.VERIFY_EMAIL,
+      hashOtp: hashOtp,
+      expiresIn: new Date(Date.now() + 5 * 60 * 1000),
+    },
+    select: {
+      expiresIn: true,
+    },
+  });
+
+  await sendVerificationEmail(user.fullName, user.email, otp);
+
+  return result;
+};
+
 export const AuthService = {
   login,
   verifyEmail,
+  resendVerificationOtp,
 };

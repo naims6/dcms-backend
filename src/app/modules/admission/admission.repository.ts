@@ -8,6 +8,8 @@ import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types";
 import { calculatePagination } from "../../../utils/pagination";
 import searchQuery from "../../../utils/search";
+import { sendVerificationEmail } from "../../../utils/sendVerificationEmail";
+import { generateVerifyOTP, hashOTP } from "../../../utils/otp";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {
@@ -21,8 +23,8 @@ const getUserByEmailOrPhone = async (email: string, phone: string) => {
 // create admission with transaction
 const createAdmission = async (payload: TAdmissionForm) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
-  const otp = AdmissionHelpers.generateVerifyOTP();
-  const hashOtp = await AdmissionHelpers.hashOTP(otp);
+  const otp = generateVerifyOTP();
+  const hashOtp = await hashOTP(otp);
 
   const userData = {
     fullName: payload.fullName,
@@ -125,7 +127,7 @@ const createAdmission = async (payload: TAdmissionForm) => {
   });
 
   // send verification email
-  await AdmissionHelpers.sendVerificationEmail(userData.fullName, userData.email, otp);
+  await sendVerificationEmail(userData.fullName, userData.email, otp);
 
   return result;
 };

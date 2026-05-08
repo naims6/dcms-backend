@@ -38,7 +38,13 @@ const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const resendVerificationOtp = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.resendVerificationOtp(req.body.email);
+  ApiResponse.success(res, result, "OTP sent successfully");
+});
+
 export const AuthController = {
   login,
   verifyEmail,
+  resendVerificationOtp,
 };
