@@ -1,3 +1,5 @@
+import { Prisma, PrismaClient } from "@prisma/client";
+
 export interface ErrorResponse {
   success: boolean;
   message: string;
@@ -12,3 +14,11 @@ export interface TPaginationQuery {
   sortOrder?: string;
   search?: string;
 }
+
+export type TJWTPayload = {
+  id: string;
+  role: string;
+  email: string;
+};
+
+export type PrismaClientOrTx = PrismaClient | Prisma.TransactionClient;

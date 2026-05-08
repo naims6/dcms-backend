@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import { AdmissionHelpers } from "./admission.helper";
 import { TAdmissionForm } from "./admission.interface";
 import bcrypt from "bcrypt";
-import { Gender, GuardianRelation, Role } from "@prisma/client";
+import { Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
 import AppError from "../../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types";
@@ -21,6 +21,8 @@ const getUserByEmailOrPhone = async (email: string, phone: string) => {
 // create admission with transaction
 const createAdmission = async (payload: TAdmissionForm) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
+  const otp = AdmissionHelpers.generateVerifyOTP();
+  const hashOtp = await AdmissionHelpers.hashOTP(otp);
 
   const userData = {
     fullName: payload.fullName,
@@ -67,6 +69,12 @@ const createAdmission = async (payload: TAdmissionForm) => {
     applicationId: AdmissionHelpers.generateApplicationId(),
   };
 
+  const otpData = {
+    hashOtp,
+    type: OtpType.VERIFY_EMAIL,
+    expiresIn: new Date(Date.now() + 5 * 60 * 1000),
+  };
+
   const result = await prisma.$transaction(async (tx) => {
     // create user
     const createdUser = await tx.user.create({
@@ -107,10 +115,18 @@ const createAdmission = async (payload: TAdmissionForm) => {
       },
     });
 
+    await tx.otp.create({
+      data: { ...otpData, userId: createdUser.id },
+    });
+
     return {
       admission: createAdmission,
     };
   });
+
+  // send verification email
+  await AdmissionHelpers.sendVerificationEmail(userData.fullName, userData.email, otp);
+
   return result;
 };
 
@@ -149,6 +165,9 @@ const getAllAmission = async (query: TPaginationQuery) => {
                 gender: true,
                 phone: true,
                 email: true,
+                isVerified: true,
+                isActive: true,
+                role: true,
               },
             },
             createdAt: true,
@@ -183,6 +202,9 @@ const getAllAmission = async (query: TPaginationQuery) => {
         gender: admission.student.user.gender,
         phone: admission.student.user.phone,
         email: admission.student.user.email,
+        isVerified: admission.student.user.isVerified,
+        isActive: admission.student.user.isActive,
+        role: admission.student.user.role,
       },
       createdAt: admission.student.createdAt,
       updatedAt: admission.student.updatedAt,

@@ -1,10 +1,12 @@
 model Guardian {
-  id           String             @id @default(uuid())
-  studentId    String
-  name         String
-  relation     GuardianRelation
-  phone        String
-  occupation   String
+  id         String           @id @default(uuid())
+  studentId  String
+  name       String
+  relation   GuardianRelation
+  phone      String
+  occupation String
 
-  student      Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, relation])
 }
