@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  # postgres service
+  dcms_postgres:
+    image: postgres:18
+    container_name: postgres_dcms
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: naims
+      POSTGRES_DB: dcms
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/18/data
+    restart: unless-stopped
+
+  # pg admin
+  dcms_pg_admin:
+    image: dpage/pgadmin4
+    container_name: pg_admin_dcms
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - dcms_postgres
+    restart: unless-stopped
+
+  # redis
+  dcms_redis:
+    image: redis:7-alpine
+    container_name: redis_dcms
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # redis insight
+  dcms_redis_insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight_dcms
+    ports:
+      - "5540:5540"
+    depends_on:
+      - dcms_redis
+    volumes:
+      - redis_insight_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  redis_insight_data:
