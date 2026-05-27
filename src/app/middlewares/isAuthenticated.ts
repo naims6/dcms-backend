@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../../utils/AppError";
-import { TJWTPayload } from "../../types";
-import { AuthHelper } from "../modules/auth/auth.helper";
+import AppError from "../../utils/AppError.js";
+import { TJWTPayload } from "../../types/index.js";
+import { AuthHelper } from "../modules/auth/auth.helper.js";
 
 const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   try {

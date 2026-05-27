@@ -1,5 +1,5 @@
-import { prisma } from "../../lib/prisma";
-import { IClass } from "./class.validation";
+import { prisma } from "../../lib/prisma.js";
+import { IClass } from "./class.validation.js";
 
 const createClass = async (payload: IClass) => {
   const result = await prisma.class.create({

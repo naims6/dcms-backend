@@ -192,6 +192,9 @@ CREATE INDEX "Address_userId_idx" ON "Address"("userId");
 CREATE UNIQUE INDEX "Admin_userId_key" ON "Admin"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Admission_studentId_key" ON "Admission"("studentId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Admission_applicationId_key" ON "Admission"("applicationId");
 
 -- CreateIndex

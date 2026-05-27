@@ -1,5 +1,5 @@
-import { renderEmailTemplate } from "./renderEmailTemplate";
-import { sendEmail } from "./sendEmail";
+import { renderEmailTemplate } from "./renderEmailTemplate.js";
+import { sendEmail } from "./sendEmail.js";
 
 export const sendVerificationEmail = async (
   fullName: string,

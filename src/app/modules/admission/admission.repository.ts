@@ -1,15 +1,15 @@
-import { prisma } from "../../lib/prisma";
-import { AdmissionHelpers } from "./admission.helper";
-import { TAdmissionForm } from "./admission.interface";
+import { prisma } from "../../lib/prisma.js";
+import { AdmissionHelpers } from "./admission.helper.js";
+import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
 import { AdmissionStatus, Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
-import AppError from "../../../utils/AppError";
+import AppError from "../../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
-import { TPaginationQuery } from "../../../types";
-import { calculatePagination } from "../../../utils/pagination";
-import searchQuery from "../../../utils/search";
-import { sendVerificationEmail } from "../../../utils/sendVerificationEmail";
-import { generateVerifyOTP, hashOTP } from "../../../utils/otp";
+import { TPaginationQuery } from "../../../types/index.js";
+import { calculatePagination } from "../../../utils/pagination.js";
+import searchQuery from "../../../utils/search.js";
+import { sendVerificationEmail } from "../../../utils/sendVerificationEmail.js";
+import { generateVerifyOTP, hashOTP } from "../../../utils/otp.js";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {

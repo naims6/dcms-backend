@@ -3,11 +3,11 @@ version: "3.8"
 services:
   # postgres service
   dcms_postgres:
-    image: postgres:18
+    image: postgres:15
     container_name: postgres_dcms
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: naims
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: dcms
     ports:
       - "5432:5432"
@@ -20,8 +20,8 @@ services:
     image: dpage/pgadmin4
     container_name: pg_admin_dcms
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: naimsorker6@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "5050:80"
     depends_on:
@@ -40,7 +40,7 @@ services:
 
   # redis insight
   dcms_redis_insight:
-    image: redis/redisinsight:latest
+    image: redis/redisinsight:3.4.2
     container_name: redis_insight_dcms
     ports:
       - "5540:5540"

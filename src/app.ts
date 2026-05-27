@@ -1,8 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import router from "./app/routes/routes";
-import notFound from "./app/middlewares/notFound";
-import globalError from "./app/middlewares/globalError";
+import router from "./app/routes/routes.js";
+import notFound from "./app/middlewares/notFound.js";
+import globalError from "./app/middlewares/globalError.js";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import YAML from "yaml";
