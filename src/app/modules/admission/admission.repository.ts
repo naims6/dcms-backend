@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma.js";
 import { AdmissionHelpers } from "./admission.helper.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
-import { AdmissionStatus, Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
+import { AdmissionStatus, Gender, GuardianRelation, OtpType, Prisma, Role } from "@prisma/client";
 import AppError from "../../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types/index.js";
@@ -77,7 +77,7 @@ const createAdmission = async (payload: TAdmissionForm) => {
     expiresIn: new Date(Date.now() + 5 * 60 * 1000),
   };
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     // create user
     const createdUser = await tx.user.create({
       data: userData,
@@ -297,7 +297,7 @@ const activeStudent = async (id: string) => {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const user = await tx.user.update({
       where: {
         id,

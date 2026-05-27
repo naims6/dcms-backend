@@ -1,6 +1,20 @@
 version: "3.8"
 
 services:
+  # build app
+  dcms-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dcms-backend
+    image: naims6/dcms-backend:latest
+    ports:
+      - "5000:5000"
+    env_file: .env
+    depends_on:
+      - dcms_postgres
+      - dcms_redis
+
   # postgres service
   dcms_postgres:
     image: postgres:15
@@ -12,7 +26,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/18/data
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   # pg admin
