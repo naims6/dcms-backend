@@ -27,8 +27,8 @@ app.get("/", (_req: Request, res: Response) => {
   res.json({
     status: "ok",
     message: "Server is Healthy",
-    uptime: process.uptime(),
-    time: new Date().toISOString,
+    uptime: `${process.uptime()} seconds`,
+    time: new Date().toISOString(),
   });
 });
 

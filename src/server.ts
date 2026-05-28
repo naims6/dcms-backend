@@ -12,7 +12,7 @@ const bootstrap = async () => {
 
     // start server
     server = app.listen(config.port, () => {
-      console.log(`Server is running on http://localhost:${config.port} test`);
+      console.log(`Server is running on http://localhost:${config.port}`);
     });
 
     // handle server graceful shutdown
