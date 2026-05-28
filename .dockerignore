@@ -3,4 +3,3 @@ dist
 .pnpm-store
 .git
 .env
-pnpm-lock.yaml
