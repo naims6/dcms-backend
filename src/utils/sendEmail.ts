@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
-import config from "../config/env";
-import AppError from "./AppError";
+import config from "../config/env.js";
+import AppError from "./AppError.js";
 import { StatusCodes } from "http-status-codes";
 
 const transporter = nodemailer.createTransport({

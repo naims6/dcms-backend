@@ -1,5 +1,3 @@
-import { Gender, GuardianRelation, Role } from "@prisma/client";
-
 export interface TAdmissionForm {
   fullName: string;
   dateOfBirth: string;

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import config from "../../../config/env";
+import config from "../../../config/env.js";
 import jwt from "jsonwebtoken";
-import { IRefreshTokenPayload, TJWTPayload } from "../../../types";
+import { IRefreshTokenPayload, TJWTPayload } from "../../../types/index.js";
 import crypto from "crypto";
 
 const checkPassword = async (password: string, hashPassword: string) => {

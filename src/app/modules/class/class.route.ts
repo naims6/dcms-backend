@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ClassController } from "./class.controller";
-import validateRequest from "../../middlewares/validateRequest";
-import { createClassValidationSchema } from "./class.validation";
+import { ClassController } from "./class.controller.js";
+import validateRequest from "../../middlewares/validateRequest.js";
+import { createClassValidationSchema } from "./class.validation.js";
 
 const router: Router = Router();
 

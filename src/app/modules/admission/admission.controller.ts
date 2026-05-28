@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import ApiResponse from "../../../utils/ApiResponse";
-import { AdmissionService } from "./admission.service";
-import catchAsync from "../../../utils/catchAsync";
+import ApiResponse from "../../../utils/ApiResponse.js";
+import { AdmissionService } from "./admission.service.js";
+import catchAsync from "../../../utils/catchAsync.js";
 import { StatusCodes } from "http-status-codes";
 
 const createAdmission = catchAsync(async (req: Request, res: Response) => {

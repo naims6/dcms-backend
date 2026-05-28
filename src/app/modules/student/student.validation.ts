@@ -1,5 +1,5 @@
 import z from "zod";
-import { bdPhone } from "../admission/admission.validation";
+import { bdPhone } from "../admission/admission.validation.js";
 
 export const updateStudentSchema = z.object({
   fullName: z.string().optional(),

@@ -1,15 +1,15 @@
-import { prisma } from "../../lib/prisma";
-import { AdmissionHelpers } from "./admission.helper";
-import { TAdmissionForm } from "./admission.interface";
+import { prisma } from "../../lib/prisma.js";
+import { AdmissionHelpers } from "./admission.helper.js";
+import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
-import { AdmissionStatus, Gender, GuardianRelation, OtpType, Role } from "@prisma/client";
-import AppError from "../../../utils/AppError";
+import { AdmissionStatus, Gender, GuardianRelation, OtpType, Prisma, Role } from "@prisma/client";
+import AppError from "../../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
-import { TPaginationQuery } from "../../../types";
-import { calculatePagination } from "../../../utils/pagination";
-import searchQuery from "../../../utils/search";
-import { sendVerificationEmail } from "../../../utils/sendVerificationEmail";
-import { generateVerifyOTP, hashOTP } from "../../../utils/otp";
+import { TPaginationQuery } from "../../../types/index.js";
+import { calculatePagination } from "../../../utils/pagination.js";
+import searchQuery from "../../../utils/search.js";
+import { sendVerificationEmail } from "../../../utils/sendVerificationEmail.js";
+import { generateVerifyOTP, hashOTP } from "../../../utils/otp.js";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {
@@ -77,7 +77,7 @@ const createAdmission = async (payload: TAdmissionForm) => {
     expiresIn: new Date(Date.now() + 5 * 60 * 1000),
   };
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     // create user
     const createdUser = await tx.user.create({
       data: userData,
@@ -297,7 +297,7 @@ const activeStudent = async (id: string) => {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const user = await tx.user.update({
       where: {
         id,

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../../utils/AppError";
+import AppError from "../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 
 const authorize = (roles: string[]) => {

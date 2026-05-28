@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
-import AppError from "../../../utils/AppError";
-import { TAdmissionForm } from "./admission.interface";
-import { AdmissionRepository } from "./admission.repository";
-import { TPaginationQuery } from "../../../types";
+import AppError from "../../../utils/AppError.js";
+import { TAdmissionForm } from "./admission.interface.js";
+import { AdmissionRepository } from "./admission.repository.js";
+import { TPaginationQuery } from "../../../types/index.js";
 
 const createAdmission = async (payload: TAdmissionForm) => {
   // if agree terms not true

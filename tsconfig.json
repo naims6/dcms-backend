@@ -2,8 +2,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "target": "es2023",
     "types": [],
     "esModuleInterop": true,
@@ -13,7 +13,6 @@
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": false,
-
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -23,5 +22,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

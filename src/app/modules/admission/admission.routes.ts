@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { AdmissionController } from "./admission.controller";
-import validateRequest from "../../middlewares/validateRequest";
-import { admissionSchema } from "./admission.validation";
-import isAuthanticated from "../../middlewares/isAuthenticated";
-import authorize from "../../middlewares/authorize";
+import { AdmissionController } from "./admission.controller.js";
+import validateRequest from "../../middlewares/validateRequest.js";
+import { admissionSchema } from "./admission.validation.js";
+import isAuthanticated from "../../middlewares/isAuthenticated.js";
+import authorize from "../../middlewares/authorize.js";
 
 const router: Router = Router();
 

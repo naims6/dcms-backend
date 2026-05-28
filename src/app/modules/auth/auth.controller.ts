@@ -1,9 +1,8 @@
-import ApiResponse from "../../../utils/ApiResponse";
+import ApiResponse from "../../../utils/ApiResponse.js";
 import { Request, Response } from "express";
-import catchAsync from "../../../utils/catchAsync";
-import { AuthService } from "./auth.service";
-import config from "../../../config/env";
-import { TJWTPayload } from "../../../types";
+import catchAsync from "../../../utils/catchAsync.js";
+import { AuthService } from "./auth.service.js";
+import config from "../../../config/env.js";
 
 const login = catchAsync(async (req: Request, res: Response) => {
   const isProduction = config.node_env === "production";

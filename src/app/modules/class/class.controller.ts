@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import catchAsync from "../../../utils/catchAsync";
-import { ClassService } from "./class.service";
-import ApiResponse from "../../../utils/ApiResponse";
+import catchAsync from "../../../utils/catchAsync.js";
+import { ClassService } from "./class.service.js";
+import ApiResponse from "../../../utils/ApiResponse.js";
 import { StatusCodes } from "http-status-codes";
 
 const createClass = catchAsync(async (req: Request, res: Response) => {

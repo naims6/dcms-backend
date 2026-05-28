@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { ErrorResponse } from "../../types";
+import { ErrorResponse } from "../../types/index.js";
 import { Prisma } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 
