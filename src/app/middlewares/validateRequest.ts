@@ -15,9 +15,9 @@ const validateRequest = (schema: z.ZodTypeAny) => {
           errors: result.error.issues,
         });
       }
-      req.body = result.data
+      req.body = result.data;
       next();
-    } catch (error) {
+    } catch {
       next(
         new AppError(
           StatusCodes.INTERNAL_SERVER_ERROR,

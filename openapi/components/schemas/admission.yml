@@ -38,7 +38,6 @@ AdmissionRequest:
       type: string
       example: Dhaka, Bangladesh
 
-
 Admission:
   type: object
   properties:

@@ -3,7 +3,7 @@ Unauthorized:
   content:
     application/json:
       schema:
-        $ref: '../schemas/common.yml#/ErrorResponse'
+        $ref: "../schemas/common.yml#/ErrorResponse"
       example:
         success: false
         error: Unauthorized
@@ -15,7 +15,7 @@ Forbidden:
   content:
     application/json:
       schema:
-        $ref: '../schemas/common.yml#/ErrorResponse'
+        $ref: "../schemas/common.yml#/ErrorResponse"
       example:
         success: false
         error: Forbidden
@@ -27,7 +27,7 @@ NotFound:
   content:
     application/json:
       schema:
-        $ref: '../schemas/common.yml#/ErrorResponse'
+        $ref: "../schemas/common.yml#/ErrorResponse"
       example:
         success: false
         error: Not Found
@@ -39,7 +39,7 @@ ServerError:
   content:
     application/json:
       schema:
-        $ref: '../schemas/common.yml#/ErrorResponse'
+        $ref: "../schemas/common.yml#/ErrorResponse"
       example:
         success: false
         error: Internal Server Error
@@ -51,7 +51,7 @@ ValidationError:
   content:
     application/json:
       schema:
-        $ref: '../schemas/common.yml#/ValidationError'
+        $ref: "../schemas/common.yml#/ValidationError"
       example:
         success: false
         error: Validation Error

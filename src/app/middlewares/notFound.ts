@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
-const notFound = (req: Request, res: Response, _next: NextFunction) => {
+const notFound = (req: Request, res: Response) => {
   res.status(400).json({
     success: false,
     message: "API Not Found",
@@ -11,4 +11,4 @@ const notFound = (req: Request, res: Response, _next: NextFunction) => {
   });
 };
 
-export default notFound
+export default notFound;

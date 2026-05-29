@@ -7,7 +7,10 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "prisma:deploy": "prisma migrate deploy",
-    "docs": "swagger-cli bundle openapi/index.yml -o ./swagger.yml"
+    "docs": "swagger-cli bundle openapi/index.yml -o ./swagger.yml",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -42,8 +45,11 @@
     "@types/nodemailer": "^8.0.0",
     "@types/pg": "^8.20.0",
     "@types/swagger-ui-express": "^4.1.8",
+    "eslint": "^10.4.0",
+    "prettier": "^3.8.3",
     "prisma": "^7.8.0",
     "swagger-cli": "^4.0.4",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
   }
 }

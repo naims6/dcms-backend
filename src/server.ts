@@ -48,7 +48,7 @@ const bootstrap = async () => {
     });
 
     // handle process error
-    process.on("uncaughtException", (error) => {
+    process.on("uncaughtException", () => {
       console.log("Uncaught Exception! Shutting down...");
 
       if (server) {

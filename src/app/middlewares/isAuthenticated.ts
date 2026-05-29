@@ -25,9 +25,9 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
       email: decoded.email,
       role: decoded.role,
     };
-   
+
     next();
-  } catch (error) {
+  } catch {
     throw new AppError(401, "Unauthorized");
   }
 };

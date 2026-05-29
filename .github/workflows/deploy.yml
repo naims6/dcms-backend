@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -19,9 +19,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME}}
           password: ${{ secrets.DOCKERHUB_TOKEN}}
 
-      -  name: Build and Push Docker Image
-         uses: docker/build-push-action@v5
-         with: 
-           context: .
-           push: true
-           tags: ${{secrets.DOCKERHUB_USERNAME}}/dcms-backend:latest
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dcms-backend:latest

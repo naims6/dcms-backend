@@ -53,8 +53,6 @@
 //   console.log("Additional update");
 // });
 
-
-
 // router.patch(
 //   "/update/:userId",
 //   validateRequest(updateStudentSchema),
