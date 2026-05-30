@@ -10,7 +10,8 @@
     "docs": "swagger-cli bundle openapi/index.yml -o ./swagger.yml",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:ci": "eslint . && tsc --noEmit && prettier --check ."
   },
   "keywords": [],
   "author": "",
