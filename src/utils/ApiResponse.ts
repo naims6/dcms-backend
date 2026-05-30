@@ -9,9 +9,9 @@ interface PaginationOptions {
 }
 
 class ApiResponse {
-  static success(
+  static success<T>(
     res: Response,
-    data: any,
+    data: T,
     message: string = "Success",
     stautsCode: number = StatusCodes.OK,
   ) {
@@ -22,6 +22,7 @@ class ApiResponse {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static error(res: Response, error: any) {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Something went wrong";
@@ -38,9 +39,9 @@ class ApiResponse {
     return res.status(statusCode).json(response);
   }
 
-  static paginated(
+  static paginated<T>(
     res: Response,
-    data: any,
+    data: T,
     pagination: PaginationOptions,
     message: string = "Success",
   ) {

@@ -2,7 +2,14 @@ import { prisma } from "../../lib/prisma.js";
 import { AdmissionHelpers } from "./admission.helper.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
-import { AdmissionStatus, Gender, GuardianRelation, OtpType, Prisma, Role } from "@prisma/client";
+import {
+  AdmissionStatus,
+  Gender,
+  GuardianRelation,
+  OtpType,
+  Prisma,
+  Role,
+} from "@prisma/client";
 import AppError from "../../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../../types/index.js";
@@ -77,54 +84,56 @@ const createAdmission = async (payload: TAdmissionForm) => {
     expiresIn: new Date(Date.now() + 5 * 60 * 1000),
   };
 
-  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    // create user
-    const createdUser = await tx.user.create({
-      data: userData,
-    });
+  const result = await prisma.$transaction(
+    async (tx: Prisma.TransactionClient) => {
+      // create user
+      const createdUser = await tx.user.create({
+        data: userData,
+      });
 
-    const createdAddress = await tx.address.create({
-      data: { ...addressData, userId: createdUser.id },
-    });
+      await tx.address.create({
+        data: { ...addressData, userId: createdUser.id },
+      });
 
-    // create student
-    const createdStudent = await tx.student.create({
-      data: {
-        ...studentData,
-        userId: createdUser.id,
-      },
-    });
+      // create student
+      const createdStudent = await tx.student.create({
+        data: {
+          ...studentData,
+          userId: createdUser.id,
+        },
+      });
 
-    // Guardian creation with student ID
-    await tx.guardian.createMany({
-      data: [
-        {
-          ...fatherGuardianData,
+      // Guardian creation with student ID
+      await tx.guardian.createMany({
+        data: [
+          {
+            ...fatherGuardianData,
+            studentId: createdStudent.id,
+          },
+          {
+            ...motherGuardianData,
+            studentId: createdStudent.id,
+          },
+        ],
+      });
+
+      // create admission
+      const createAdmission = await tx.admission.create({
+        data: {
+          ...admissionData,
           studentId: createdStudent.id,
         },
-        {
-          ...motherGuardianData,
-          studentId: createdStudent.id,
-        },
-      ],
-    });
+      });
 
-    // create admission
-    const createAdmission = await tx.admission.create({
-      data: {
-        ...admissionData,
-        studentId: createdStudent.id,
-      },
-    });
+      await tx.otp.create({
+        data: { ...otpData, userId: createdUser.id },
+      });
 
-    await tx.otp.create({
-      data: { ...otpData, userId: createdUser.id },
-    });
-
-    return {
-      admission: createAdmission,
-    };
-  });
+      return {
+        admission: createAdmission,
+      };
+    },
+  );
 
   // send verification email
   await sendVerificationEmail(userData.fullName, userData.email, otp);
@@ -194,7 +203,8 @@ const getAllAmission = async (query: TPaginationQuery) => {
     }),
   ]);
 
-  const transformedResult = result.map((admission) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transformedResult = result.map((admission: any) => {
     return {
       admissionId: admission.applicationId,
       userId: admission.student.user.id,
@@ -297,41 +307,43 @@ const activeStudent = async (id: string) => {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
-  const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    const user = await tx.user.update({
-      where: {
-        id,
-      },
-      data: {
-        isActive: true,
-      },
-      select: {
-        id: true,
-        fullName: true,
-        email: true,
-        student: {
-          select: {
-            id: true,
+  const result = await prisma.$transaction(
+    async (tx: Prisma.TransactionClient) => {
+      const user = await tx.user.update({
+        where: {
+          id,
+        },
+        data: {
+          isActive: true,
+        },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          student: {
+            select: {
+              id: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    if (!user.student?.id) {
-      throw new AppError(StatusCodes.NOT_FOUND, "Student not found");
-    }
+      if (!user.student?.id) {
+        throw new AppError(StatusCodes.NOT_FOUND, "Student not found");
+      }
 
-    await tx.admission.update({
-      where: {
-        studentId: user.student.id,
-      },
-      data: {
-        status: AdmissionStatus.APPROVED,
-      },
-    });
+      await tx.admission.update({
+        where: {
+          studentId: user.student.id,
+        },
+        data: {
+          status: AdmissionStatus.APPROVED,
+        },
+      });
 
-    return user;
-  });
+      return user;
+    },
+  );
 
   return result;
 };

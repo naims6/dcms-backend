@@ -285,7 +285,7 @@ const changePassword = async (payload: TChangePassword, userId: string) => {
 
   const hashPassword = await bcrypt.hash(newPassword, 10);
 
-  const result = prisma.$transaction(async (tx) => {
+  prisma.$transaction(async (tx) => {
     const result = await tx.user.update({
       where: {
         id: userId,
