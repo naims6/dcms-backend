@@ -1,29 +1,24 @@
 model User {
-  id String @id @default(uuid())
-
+  id          String    @id @default(uuid())
   fullName    String
   dateOfBirth DateTime
   gender      Gender
   bloodGroup  String
   religion    String
-
-  email    String @unique
-  phone    String @unique
-  password String
-
-  role     Role
-  isActive  Boolean @default(false)
-  isVerified Boolean @default(false)
-
-  student Student?
-  teacher Teacher?
-  admin   Admin?
-  address Address?
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  sessions  Session[]
-  otp       Otp[]
+  email       String    @unique
+  phone       String    @unique
+  password    String
+  role        Role
+  isActive    Boolean   @default(false)
+  isVerified  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  address     Address?
+  admin       Admin?
+  otp         Otp[]
+  sessions    Session[]
+  student     Student?
+  teacher     Teacher?
 
   @@index([role])
   @@index([email])
@@ -35,9 +30,8 @@ model Session {
   sessionId    String   @unique
   expiresIn    DateTime
   refreshToken String   @unique
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -47,9 +41,8 @@ model Otp {
   hashOtp   String
   expiresIn DateTime
   type      OtpType
-
   userId    String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, type])
 }

@@ -3,9 +3,8 @@ model Address {
   address    String
   city       String
   postalCode String
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String @unique
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
