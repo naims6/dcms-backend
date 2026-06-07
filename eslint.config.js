@@ -10,7 +10,7 @@ export default defineConfig([
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: globals.node,
     },
     rules: {
       "@typescript-eslint/ban-ts-comment": "off",
