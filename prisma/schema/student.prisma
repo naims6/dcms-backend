@@ -1,23 +1,18 @@
 model Student {
-  id String @id @default(uuid())
-
-  userId  String @unique
-  classId String
-
+  id             String     @id @default(uuid())
+  userId         String     @unique
+  classId        String
   studentPhoto   String
   previousSchool String
   previousClass  String
   previousGrade  String
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  class Class @relation(fields: [classId], references: [id])
-
-  admissions Admission[]
-  payments   Payment[]
-  guardians  Guardian[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  admissions     Admission?
+  guardians      Guardian[]
+  payments       Payment[]
+  class          Class      @relation(fields: [classId], references: [id])
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([classId])
 }

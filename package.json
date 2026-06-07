@@ -13,6 +13,9 @@
     "format:check": "prettier --check .",
     "test:ci": "eslint . && tsc --noEmit && prettier --check ."
   },
+  "prisma": {
+    "schema": "prisma/schema/schema.prisma"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -30,12 +33,15 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.7",
     "pg": "^8.20.0",
+    "redis": "^6.0.0",
     "swagger-ui-express": "^5.0.1",
     "tsx": "^4.21.0",
     "yaml": "^2.8.3",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "prisma": "^7.8.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
@@ -47,8 +53,8 @@
     "@types/pg": "^8.20.0",
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.4.0",
+    "globals": "^17.6.0",
     "prettier": "^3.8.3",
-    "prisma": "^7.8.0",
     "swagger-cli": "^4.0.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0"

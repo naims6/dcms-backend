@@ -1,14 +1,9 @@
 model Teacher {
-  id String @id @default(uuid())
-
-  userId String @unique
-
-  subject       String
-  qualification String?
-
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  subject         String
+  qualification   String?
   experienceYears Int?
-
-  joiningDate DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joiningDate     DateTime
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

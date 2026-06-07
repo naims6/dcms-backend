@@ -1,9 +1,8 @@
 model Gallery {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   imageUrl    String
   category    String
   description String?
-
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }

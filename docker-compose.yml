@@ -1,23 +1,27 @@
-version: "3.8"
-
 services:
   # build app
-  dcms-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dcms-backend
-    image: naims6/dcms-backend:latest
-    ports:
-      - "5000:5000"
-    env_file: .env
-    depends_on:
-      - dcms_postgres
-      - dcms_redis
+  # dcms-backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #     args:
+  #       - DATABASE_URL=${DATABASE_URL}
+  #   container_name: dcms-backend-dev
+  #   image: dcms-backend
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules # prevent overwriting node_modules with host's empty folder
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - dcms_postgres
+  #     - dcms_redis
 
   # postgres service
   dcms_postgres:
-    image: postgres:15
+    image: postgres:17-alpine
     container_name: postgres_dcms
     environment:
       POSTGRES_USER: postgres
@@ -27,7 +31,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
+      # - ./postgres-data:/var/lib/postgresql/data # bind mount for local development
+    restart: always
 
   # pg admin
   dcms_pg_admin:
@@ -40,7 +45,7 @@ services:
       - "5050:80"
     depends_on:
       - dcms_postgres
-    restart: unless-stopped
+    restart: always
 
   # redis
   dcms_redis:
@@ -50,7 +55,7 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    restart: unless-stopped
+    restart: always
 
   # redis insight
   dcms_redis_insight:
@@ -62,7 +67,7 @@ services:
       - dcms_redis
     volumes:
       - redis_insight_data:/data
-    restart: unless-stopped
+    restart: always
 
 volumes:
   postgres_data:
