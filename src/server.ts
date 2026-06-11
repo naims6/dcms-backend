@@ -2,6 +2,7 @@ import { Server } from "http";
 import { prisma } from "./app/lib/prisma.js";
 import app from "./app.js";
 import config from "./config/env.js";
+import connectRedis from "./config/redis.js";
 
 const bootstrap = async () => {
   let server: Server;
@@ -9,7 +10,7 @@ const bootstrap = async () => {
   try {
     await prisma.$connect();
     console.log("Database connected successfully");
-
+    await connectRedis();
     // start server
     server = app.listen(config.port, () => {
       console.log(`Server is running on http://localhost:${config.port}`);

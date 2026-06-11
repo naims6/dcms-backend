@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 
 const globalError: ErrorRequestHandler = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err: any,
   _req: Request,
   res: Response,
