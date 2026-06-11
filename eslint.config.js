@@ -15,6 +15,7 @@ export default defineConfig([
     rules: {
       "@typescript-eslint/ban-ts-comment": "off",
       "no-control-regex": "off",
+      "no-unused-vars": "off",
     },
   },
 ]);

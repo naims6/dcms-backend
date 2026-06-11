@@ -33,14 +33,6 @@ const createAdmission = async (payload: TAdmissionForm) => {
     }
   }
 
-  // if password not matched
-  if (payload.password !== payload.confirmPassword) {
-    throw new AppError(
-      StatusCodes.BAD_REQUEST,
-      "Password and confirm password do not match",
-    );
-  }
-
   const result = await AdmissionRepository.createAdmission(payload);
 
   return result;
