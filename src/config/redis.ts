@@ -23,6 +23,7 @@ const connectRedis = async () => {
     }
   } catch (err) {
     console.error("Redis Client Error", err);
+    throw err;
   }
 };
 

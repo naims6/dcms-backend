@@ -29,8 +29,8 @@ const createAdmission = async (payload: TAdmissionForm) => {
   const otp = generateVerifyOTP();
 
   const [hashOtp, hashedPassword] = await Promise.all([
-    await hashOTP(otp),
-    await bcrypt.hash(payload.password, 10),
+    hashOTP(otp),
+    bcrypt.hash(payload.password, 10),
   ]);
 
   // const userData = {
@@ -189,11 +189,9 @@ const createAdmission = async (payload: TAdmissionForm) => {
   await redis.set(`admission:${applicationId}`, JSON.stringify(draftData), {
     EX: 60 * 60 * 24,
   });
+
   // set otp in redis
   await OTPServices.saveOTP("email_verification", payload.email, hashOtp);
-  // await redis.set(`otp:${payload.email}`, JSON.stringify({ otp: hashOtp }), {
-  //   EX: 60 * 5,
-  // });
 
   // verification email queue with bullmq
   await emailQueue.add(
