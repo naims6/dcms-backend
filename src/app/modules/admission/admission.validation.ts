@@ -47,3 +47,11 @@ export const admissionSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const verifyEmailSchema = z.object({
+  email: z.email("Invalid email"),
+  otp: z.string().length(6, "OTP must be 6 digits"),
+  applicationId: z.string().min(1, "Application ID is required"),
+});
+
+export type TVerifyEmail = z.infer<typeof verifyEmailSchema>;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AdmissionController } from "./admission.controller.js";
 import validateRequest from "../../middlewares/validateRequest.js";
-import { admissionSchema } from "./admission.validation.js";
+import { admissionSchema, verifyEmailSchema } from "./admission.validation.js";
 import isAuthanticated from "../../middlewares/isAuthenticated.js";
 import authorize from "../../middlewares/authorize.js";
 
@@ -11,6 +11,12 @@ router.post(
   "/create",
   validateRequest(admissionSchema),
   AdmissionController.createAdmission,
+);
+
+router.post(
+  "/verify-email",
+  validateRequest(verifyEmailSchema),
+  AdmissionController.verifyAdmissionEmail,
 );
 
 router.use(isAuthanticated);
