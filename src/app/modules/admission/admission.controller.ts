@@ -15,6 +15,16 @@ const createAdmission = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
+const verifyAdmissionEmail = catchAsync(async (req: Request, res: Response) => {
+  const result = await AdmissionService.verifyAdmissionEmail(req.body);
+  return ApiResponse.success(
+    res,
+    result,
+    "Admission email verified successfully",
+    StatusCodes.OK,
+  );
+});
+
 const getAllAdmissions = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
 
@@ -65,6 +75,7 @@ const rejectApplication = catchAsync(async (req: Request, res: Response) => {
 
 export const AdmissionController = {
   createAdmission,
+  verifyAdmissionEmail,
   getAllAdmissions,
   getSingleAdmission,
   activeStudent,

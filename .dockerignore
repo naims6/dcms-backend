@@ -3,7 +3,6 @@ dist
 .pnpm-store
 .git
 .env
-.env.example
 openapi
 Dockerfile
 docker-compose*

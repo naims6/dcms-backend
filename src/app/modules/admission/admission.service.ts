@@ -3,6 +3,7 @@ import AppError from "../../../utils/AppError.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import { AdmissionRepository } from "./admission.repository.js";
 import { TPaginationQuery } from "../../../types/index.js";
+import { TVerifyEmail } from "./admission.validation.js";
 
 const createAdmission = async (payload: TAdmissionForm) => {
   // if agree terms not true
@@ -33,16 +34,13 @@ const createAdmission = async (payload: TAdmissionForm) => {
     }
   }
 
-  // if password not matched
-  if (payload.password !== payload.confirmPassword) {
-    throw new AppError(
-      StatusCodes.BAD_REQUEST,
-      "Password and confirm password do not match",
-    );
-  }
-
   const result = await AdmissionRepository.createAdmission(payload);
 
+  return result;
+};
+
+const verifyAdmissionEmail = async (payload: TVerifyEmail) => {
+  const result = await AdmissionRepository.verifyAdmissionEmail(payload);
   return result;
 };
 
@@ -68,6 +66,7 @@ const rejectApplication = async (id: string) => {
 
 export const AdmissionService = {
   createAdmission,
+  verifyAdmissionEmail,
   getAllAdmission,
   getSingleAdmission,
   activeStudent,
