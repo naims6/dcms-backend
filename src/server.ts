@@ -3,6 +3,7 @@ import { prisma } from "./app/lib/prisma.js";
 import app from "./app.js";
 import config from "./config/env.js";
 import connectRedis from "./config/redis.js";
+import "./job/workers/index.js";
 
 const bootstrap = async () => {
   let server: Server;
