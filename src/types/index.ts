@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import { AuditAction } from "../constants/auditAction.js";
 
 export interface ErrorResponse {
   success: boolean;
@@ -28,7 +29,7 @@ export interface IRefreshTokenPayload {
 
 export interface AuditLog {
   req: Request;
-  action: string;
+  action: AuditAction;
   userId: string | null;
   description: string | null;
 }
