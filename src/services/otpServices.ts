@@ -1,6 +1,5 @@
 import { redis } from "../config/redis.js";
 
-
 type OTPScope = "email_verification" | "password_reset" | "two_factor";
 const otpKey = (scope: OTPScope, email: string) => `otp:${scope}:${email}`;
 

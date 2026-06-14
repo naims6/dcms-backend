@@ -4,7 +4,6 @@ import catchAsync from "../../utils/catchAsync.js";
 import config from "../../config/env.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 
-
 const login = catchAsync(async (req: Request, res: Response) => {
   const isProduction = config.node_env === "production";
   const { accessToken, refreshToken } = await AuthService.login(req.body);
