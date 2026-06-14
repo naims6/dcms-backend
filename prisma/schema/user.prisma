@@ -19,6 +19,7 @@ model User {
   sessions    Session[]
   student     Student?
   teacher     Teacher?
+  auditLogs   AuditLog[]
 
   // relations
   role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)

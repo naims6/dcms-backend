@@ -1,15 +1,15 @@
-import { Request } from 'express';
-// import { AuditAction } from '../../constants/auditAction.js';
-import { CreateRoleInput } from './role.validation.js';
-import { prisma } from '../../lib/prisma.js';
-import { getUserId } from '../../utils/requestUser.js';
+import { Request } from "express";
+import { CreateRoleInput } from "./role.validation.js";
+import { prisma } from "../../lib/prisma.js";
+import { getUserId } from "../../utils/requestUser.js";
+import { AuditAction } from "../../constants/auditAction.js";
 
 // create role
 const createRole = async (data: CreateRoleInput, userId: string) => {
   const { name, description, permissionIds } = data;
 
   if (permissionIds.length === 0) {
-    throw new Error('Role must have at least one permission');
+    throw new Error("Role must have at least one permission");
   }
 
   const result = await prisma.$transaction(async (tx) => {
@@ -34,13 +34,13 @@ const createRole = async (data: CreateRoleInput, userId: string) => {
     });
 
     // 3. Create audit log
-    // await tx.auditLog.create({
-    //   data: {
-    //     action: AuditAction.CREATE_ROLE,
-    //     userId: userId,
-    //     description: `Role created with id: ${role.id}, name: ${name}`,
-    //   },
-    // });
+    await tx.auditLog.create({
+      data: {
+        action: AuditAction.CREATE_ROLE,
+        userId: userId,
+        description: `Role created with id: ${role.id}, name: ${name}`,
+      },
+    });
 
     return role;
   });

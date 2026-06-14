@@ -26,4 +26,11 @@ export interface IRefreshTokenPayload {
   userId: string;
 }
 
+export interface AuditLog {
+  req: Request;
+  action: string;
+  userId: string | null;
+  description: string | null;
+}
+
 export type PrismaClientOrTx = PrismaClient | Prisma.TransactionClient;
