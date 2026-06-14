@@ -21,7 +21,7 @@ const login = async (payload: TLogin) => {
     select: {
       id: true,
       email: true,
-      role: true,
+      roleId: true,
       password: true,
       isActive: true,
       isVerified: true,
@@ -56,7 +56,7 @@ const login = async (payload: TLogin) => {
   const JWTPayload: TJWTPayload = {
     id: user.id,
     email: user.email,
-    role: user.role,
+    roleId: user.roleId,
   };
 
   const accessToken = AuthHelper.createAccessToken(JWTPayload);
@@ -208,7 +208,7 @@ const refreshToken = async (refreshToken: string) => {
         select: {
           id: true,
           email: true,
-          role: true,
+          roleId: true,
         },
       },
     },
@@ -227,7 +227,7 @@ const refreshToken = async (refreshToken: string) => {
   const JWTPayload = {
     id: user.id,
     email: user.email,
-    role: user.role,
+    roleId: user.roleId,
   };
 
   const newAccessToken = AuthHelper.createAccessToken(JWTPayload);

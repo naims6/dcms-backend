@@ -23,7 +23,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      role: decoded.role,
+      roleId: decoded.roleId,
     };
 
     next();

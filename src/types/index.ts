@@ -17,7 +17,7 @@ export interface TPaginationQuery {
 
 export type TJWTPayload = {
   id: string;
-  role: string;
+  roleId: number;
   email: string;
 };
 

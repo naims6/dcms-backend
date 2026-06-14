@@ -1,0 +1,9 @@
+model Permission {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  // Relations
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}

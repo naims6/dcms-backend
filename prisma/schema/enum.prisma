@@ -1,9 +1,10 @@
-enum Role {
-  SUPER_ADMIN
-  ADMIN
-  TEACHER
-  STUDENT
-}
+// TODO:
+// enum Role {
+//   SUPER_ADMIN
+//   ADMIN
+//   TEACHER
+//   STUDENT
+// }
 
 enum AdmissionStatus {
   PENDING
