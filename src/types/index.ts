@@ -17,13 +17,20 @@ export interface TPaginationQuery {
 
 export type TJWTPayload = {
   id: string;
-  role: string;
+  roleId: number;
   email: string;
 };
 
 export interface IRefreshTokenPayload {
   sessionId: string;
   userId: string;
+}
+
+export interface AuditLog {
+  req: Request;
+  action: string;
+  userId: string | null;
+  description: string | null;
 }
 
 export type PrismaClientOrTx = PrismaClient | Prisma.TransactionClient;

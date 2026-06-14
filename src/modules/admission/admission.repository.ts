@@ -3,16 +3,16 @@ import { AdmissionHelpers } from "./admission.helper.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
 import { AdmissionStatus, Prisma } from "@prisma/client";
-import AppError from "../../../utils/AppError.js";
-import { StatusCodes } from "http-status-codes";
-import { TPaginationQuery } from "../../../types/index.js";
-import { calculatePagination } from "../../../utils/pagination.js";
-import searchQuery from "../../../utils/search.js";
-import { generateVerifyOTP, hashOTP } from "../../../utils/otp.js";
-import { redis } from "../../../config/redis.js";
-import { emailQueue } from "../../../job/queues/email.queue.js";
 import { OTPServices } from "../../services/otpServices.js";
 import { TVerifyEmail } from "./admission.validation.js";
+import { generateVerifyOTP, hashOTP } from "../../utils/otp.js";
+import { redis } from "../../config/redis.js";
+import { emailQueue } from "../../job/queues/email.queue.js";
+import AppError from "../../utils/AppError.js";
+import { StatusCodes } from "http-status-codes";
+import { TPaginationQuery } from "../../types/index.js";
+import { calculatePagination } from "../../utils/pagination.js";
+import searchQuery from "../../utils/search.js";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {
@@ -29,8 +29,8 @@ const createAdmission = async (payload: TAdmissionForm) => {
   const otp = generateVerifyOTP();
 
   const [hashOtp, hashedPassword] = await Promise.all([
-    await hashOTP(otp),
-    await bcrypt.hash(payload.password, 10),
+    hashOTP(otp),
+    bcrypt.hash(payload.password, 10),
   ]);
 
   // const userData = {
@@ -189,11 +189,9 @@ const createAdmission = async (payload: TAdmissionForm) => {
   await redis.set(`admission:${applicationId}`, JSON.stringify(draftData), {
     EX: 60 * 60 * 24,
   });
+
   // set otp in redis
   await OTPServices.saveOTP("email_verification", payload.email, hashOtp);
-  // await redis.set(`otp:${payload.email}`, JSON.stringify({ otp: hashOtp }), {
-  //   EX: 60 * 5,
-  // });
 
   // verification email queue with bullmq
   await emailQueue.add(

@@ -8,7 +8,7 @@ model User {
   email       String    @unique
   phone       String    @unique
   password    String
-  role        Role
+  roleId      Int
   isActive    Boolean   @default(false)
   isVerified  Boolean   @default(false)
   createdAt   DateTime  @default(now())
@@ -19,8 +19,12 @@ model User {
   sessions    Session[]
   student     Student?
   teacher     Teacher?
+  auditLogs   AuditLog[]
 
-  @@index([role])
+  // relations
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@index([roleId])
   @@index([email])
   @@index([phone])
 }

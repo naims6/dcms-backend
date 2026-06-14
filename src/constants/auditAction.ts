@@ -1,0 +1,5 @@
+export enum AuditAction {
+  CREATE_ROLE = "CREATE_ROLE",
+  UPDATE_ROLE = "UPDATE_ROLE",
+  DELETE_ROLE = "DELETE_ROLE",
+}

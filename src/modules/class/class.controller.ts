@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import catchAsync from "../../../utils/catchAsync.js";
 import { ClassService } from "./class.service.js";
-import ApiResponse from "../../../utils/ApiResponse.js";
+
 import { StatusCodes } from "http-status-codes";
+import catchAsync from "../../utils/catchAsync.js";
+import ApiResponse from "../../utils/ApiResponse.js";
 
 const createClass = catchAsync(async (req: Request, res: Response) => {
   const result = await ClassService.createClass(req.body);

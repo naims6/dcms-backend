@@ -1,12 +1,12 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import router from "./app/routes/routes.js";
-import notFound from "./app/middlewares/notFound.js";
-import globalError from "./app/middlewares/globalError.js";
+import router from "./routes/routes.js";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import YAML from "yaml";
 import cookieParser from "cookie-parser";
+import notFound from "./middlewares/notFound.js";
+import globalError from "./middlewares/globalError.js";
 
 const app: Application = express();
 

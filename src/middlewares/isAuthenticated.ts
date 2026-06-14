@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../../utils/AppError.js";
-import { TJWTPayload } from "../../types/index.js";
 import { AuthHelper } from "../modules/auth/auth.helper.js";
+import AppError from "../utils/AppError.js";
+import { TJWTPayload } from "../types/index.js";
 
 const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,7 +23,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      role: decoded.role,
+      roleId: decoded.roleId,
     };
 
     next();
