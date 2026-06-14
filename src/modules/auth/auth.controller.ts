@@ -1,8 +1,9 @@
-import ApiResponse from "../../../utils/ApiResponse.js";
 import { Request, Response } from "express";
-import catchAsync from "../../../utils/catchAsync.js";
 import { AuthService } from "./auth.service.js";
-import config from "../../../config/env.js";
+import catchAsync from "../../utils/catchAsync.js";
+import config from "../../config/env.js";
+import ApiResponse from "../../utils/ApiResponse.js";
+
 
 const login = catchAsync(async (req: Request, res: Response) => {
   const isProduction = config.node_env === "production";

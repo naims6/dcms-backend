@@ -3,16 +3,16 @@ import { AdmissionHelpers } from "./admission.helper.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
 import { AdmissionStatus, Prisma } from "@prisma/client";
-import AppError from "../../../utils/AppError.js";
-import { StatusCodes } from "http-status-codes";
-import { TPaginationQuery } from "../../../types/index.js";
-import { calculatePagination } from "../../../utils/pagination.js";
-import searchQuery from "../../../utils/search.js";
-import { generateVerifyOTP, hashOTP } from "../../../utils/otp.js";
-import { redis } from "../../../config/redis.js";
-import { emailQueue } from "../../../job/queues/email.queue.js";
 import { OTPServices } from "../../services/otpServices.js";
 import { TVerifyEmail } from "./admission.validation.js";
+import { generateVerifyOTP, hashOTP } from "../../utils/otp.js";
+import { redis } from "../../config/redis.js";
+import { emailQueue } from "../../job/queues/email.queue.js";
+import AppError from "../../utils/AppError.js";
+import { StatusCodes } from "http-status-codes";
+import { TPaginationQuery } from "../../types/index.js";
+import { calculatePagination } from "../../utils/pagination.js";
+import searchQuery from "../../utils/search.js";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {
