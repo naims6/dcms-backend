@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { AuditAction } from "../constants/auditAction.js";
+import { Prisma, PrismaClient } from "../generated/prisma/client.js";
 
 export interface ErrorResponse {
   success: boolean;
