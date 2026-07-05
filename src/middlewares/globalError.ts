@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { Prisma } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { ErrorResponse } from "../types/index.js";
+import { Prisma } from "../generated/prisma/client.js";
 
 const globalError: ErrorRequestHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

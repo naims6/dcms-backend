@@ -2,12 +2,12 @@ import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma.js";
 import { TChangePassword, TLogin, TVerifyEmail } from "./auth.validation.js";
 import { AuthHelper } from "./auth.helper.js";
-import { OtpType } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "../../utils/AppError.js";
 import { TJWTPayload } from "../../types/index.js";
 import { generateVerifyOTP } from "../../utils/otp.js";
 import { sendVerificationEmail } from "../../utils/sendVerificationEmail.js";
+import { OtpType } from "../../generated/prisma/enums.js";
 
 const login = async (payload: TLogin) => {
   if (!payload.email && !payload.phone) {
