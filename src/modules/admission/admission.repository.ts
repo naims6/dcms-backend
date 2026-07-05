@@ -2,7 +2,6 @@ import { prisma } from "../../lib/prisma.js";
 import { AdmissionHelpers } from "./admission.helper.js";
 import { TAdmissionForm } from "./admission.interface.js";
 import bcrypt from "bcrypt";
-import { AdmissionStatus, Prisma } from "@prisma/client";
 import { OTPServices } from "../../services/otpServices.js";
 import { TVerifyEmail } from "./admission.validation.js";
 import { generateVerifyOTP, hashOTP } from "../../utils/otp.js";
@@ -13,6 +12,7 @@ import { StatusCodes } from "http-status-codes";
 import { TPaginationQuery } from "../../types/index.js";
 import { calculatePagination } from "../../utils/pagination.js";
 import searchQuery from "../../utils/search.js";
+import { AdmissionStatus, Prisma } from "../../generated/prisma/client.js";
 
 // utility helpers
 const getUserByEmailOrPhone = async (email: string, phone: string) => {

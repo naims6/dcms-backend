@@ -22,7 +22,7 @@ model User {
   auditLogs   AuditLog[]
 
   // relations
-  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Restrict)
 
   @@index([roleId])
   @@index([email])

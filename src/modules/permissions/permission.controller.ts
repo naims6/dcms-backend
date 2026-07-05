@@ -5,11 +5,7 @@ import ApiResponse from "../../utils/ApiResponse.js";
 
 const getAllPermissions = catchAsync(async (_req: Request, res: Response) => {
   const result = await permissionService.getAllPermissions();
-  ApiResponse.success(res, {
-    statusCode: 200,
-    message: "Permissions fetched successfully",
-    data: result,
-  });
+  ApiResponse.success(res, result, "Permissions fetched successfully");
 });
 
 export const permissionController = {
