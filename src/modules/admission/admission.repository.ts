@@ -212,8 +212,6 @@ const createAdmission = async (payload: TAdmissionForm) => {
   return {
     applicationId: applicationId,
     email: payload.email,
-    message:
-      "Admission form submitted successfully. Please verify your email to continue.",
   };
 };
 
