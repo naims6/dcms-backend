@@ -32,6 +32,7 @@ RUN pnpm install --prod --frozen-lockfile
 # copy from the builder
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/swagger.yml ./swagger.yml
 
 EXPOSE 5000
 
