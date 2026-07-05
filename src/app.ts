@@ -26,7 +26,7 @@ app.use("/api/v1", router);
 app.get("/", (_req: Request, res: Response) => {
   res.json({
     status: "ok",
-    message: "Server is Healthyyy",
+    message: "Server is Healthy",
     uptime: `${process.uptime()} seconds`,
     time: new Date().toISOString(),
   });

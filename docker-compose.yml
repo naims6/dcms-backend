@@ -1,19 +1,19 @@
 services:
   # build app
-  dcms-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dcms-backend-prod
-    image: naims6/dcms-backend:latest
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env
-    depends_on:
-      - dcms_postgres
-      - dcms_redis
-    restart: unless-stopped
+  # dcms-backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: dcms-backend-prod
+  #   image: naims6/dcms-backend:latest
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - dcms_postgres
+  #     - dcms_redis
+  #   restart: unless-stopped
 
   # postgres service
   dcms_postgres:
