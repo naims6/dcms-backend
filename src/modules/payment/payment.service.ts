@@ -18,7 +18,6 @@ const initiatePayment = async (payload: IInitiatePayment) => {
       transactionId,
       amount: payload.amount,
       purpose: payload.purpose,
-      studentId: null,
     },
   });
 

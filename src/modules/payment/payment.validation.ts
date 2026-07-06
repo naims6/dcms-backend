@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const InitiatePaymentSchema = z.object({
   amount: z.number(),
-  studentId: z.string(),
+  studentId: z.string().optional(),
   purpose: z.enum(PaymentPurpose),
 });
 

@@ -17,7 +17,7 @@ services:
 
   # postgres service
   dcms_postgres:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     container_name: postgres_dcms
     environment:
       POSTGRES_USER: postgres
@@ -30,12 +30,19 @@ services:
 
   # redis
   dcms_redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis_dcms
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    restart: always
+
+  dcms_redis_insight:
+    image: redis/redisinsight
+    container_name: redis_insight
+    ports:
+      - "5555:5555"
     restart: always
 
 volumes:
