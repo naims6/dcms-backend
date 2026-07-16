@@ -10,7 +10,7 @@ const createAdmission = catchAsync(async (req: Request, res: Response) => {
   return ApiResponse.success(
     res,
     result,
-    "Admission created successfully",
+    "Admission form submitted successfully. Please verify your email to continue.",
     StatusCodes.CREATED,
   );
 });

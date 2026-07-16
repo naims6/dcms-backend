@@ -1,19 +1,19 @@
 services:
   # build app
-  dcms-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dcms-backend-prod
-    image: naims6/dcms-backend:latest
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env
-    depends_on:
-      - dcms_postgres
-      - dcms_redis
-    restart: unless-stopped
+  # dcms-backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: dcms-backend-prod
+  #   image: naims6/dcms-backend:latest
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - dcms_postgres
+  #     - dcms_redis
+  #   restart: unless-stopped
 
   # postgres service
   dcms_postgres:
@@ -26,16 +26,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
 
   # redis
   dcms_redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis_dcms
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    restart: always
+
+  dcms_redis_insight:
+    image: redis/redisinsight
+    container_name: redis_insight
+    ports:
+      - "5540:5540"
     restart: always
 
 volumes:
