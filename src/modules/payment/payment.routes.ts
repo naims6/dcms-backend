@@ -21,6 +21,5 @@ router.post("/cancel", PaymentController.cancelPayment);
 
 // router.get("/:transactionId", PaymentController.getOnePayment);
 
-// router.get("/history", PaymentController.historyPayment);
 
 export const paymentRoutes = router;
