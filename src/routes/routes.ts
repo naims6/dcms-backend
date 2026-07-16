@@ -24,7 +24,7 @@ const moduleRouters = [
   //   path: "/student",
   //   route: StudentRoutes,
   // },
-    {
+  {
     path: "/payment",
     route: paymentRoutes,
   },

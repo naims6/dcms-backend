@@ -157,7 +157,7 @@ const verifyAdmissionEmail = async (payload: TVerifyEmail) => {
 
   parsedApplicationData.status = "EMAIL_VERIFIED";
 
-  // set new 
+  // set new
   await redis.set(
     RedisKeys.admissionDraft(payload.applicationId),
     JSON.stringify(parsedApplicationData),
