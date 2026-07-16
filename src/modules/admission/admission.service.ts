@@ -6,13 +6,15 @@ import { TPaginationQuery } from "../../types/index.js";
 import { prisma } from "../../lib/prisma.js";
 import { AdmissionHelpers } from "./admission.helper.js";
 import bcrypt from "bcrypt";
-import { OTPServices } from "../../services/otpServices.js";
+import { OTPServices } from "../../redis/services/otpServices.js";
 import { generateVerifyOTP, hashOTP } from "../../utils/otp.js";
 import { redis } from "../../config/redis.js";
 import { emailQueue } from "../../job/queues/email.queue.js";
 import { calculatePagination } from "../../utils/pagination.js";
 import searchQuery from "../../utils/search.js";
 import { AdmissionStatus, Prisma } from "../../generated/prisma/client.js";
+import { AdmissionServices } from "../../redis/services/admissionService.js";
+import { RedisKeys } from "../../redis/keys/redisKeys.js";
 
 // create admission
 const createAdmission = async (payload: TAdmissionForm) => {
@@ -97,11 +99,13 @@ const createAdmission = async (payload: TAdmissionForm) => {
     status: "OTP_PENDING",
   };
 
-  await redis.set(`admission:${applicationId}`, JSON.stringify(draftData), {
-    EX: 60 * 60 * 24,
-  });
+  // Save admission draft in Redis
+  await AdmissionServices.saveAdmissionDraft(
+    applicationId,
+    JSON.stringify(draftData),
+  );
 
-  await OTPServices.saveOTP("email_verification", payload.email, hashOtp);
+  await OTPServices.saveOTP(payload.email, hashOtp);
 
   await emailQueue.add(
     "send-verification-email",
@@ -126,10 +130,7 @@ const createAdmission = async (payload: TAdmissionForm) => {
 
 // verify admission email
 const verifyAdmissionEmail = async (payload: TVerifyEmail) => {
-  const redisOtp = await OTPServices.getOTP(
-    "email_verification",
-    payload.email,
-  );
+  const redisOtp = await OTPServices.getOTP(payload.email);
 
   if (!redisOtp) {
     throw new AppError(StatusCodes.BAD_REQUEST, "Invalid or expired OTP");
@@ -140,8 +141,8 @@ const verifyAdmissionEmail = async (payload: TVerifyEmail) => {
     throw new AppError(StatusCodes.BAD_REQUEST, "otp is not matched");
   }
 
-  const draftApplicatoin = await redis.get(
-    `admission:${payload.applicationId}`,
+  const draftApplicatoin = await AdmissionServices.getAdmissionDraft(
+    payload.applicationId,
   );
 
   if (!draftApplicatoin) {
@@ -156,15 +157,16 @@ const verifyAdmissionEmail = async (payload: TVerifyEmail) => {
 
   parsedApplicationData.status = "EMAIL_VERIFIED";
 
+  // set new 
   await redis.set(
-    `admission:${payload.applicationId}`,
+    RedisKeys.admissionDraft(payload.applicationId),
     JSON.stringify(parsedApplicationData),
     {
       EX: 60 * 60 * 24,
     },
   );
 
-  await OTPServices.deleteOTP("email_verification", payload.email);
+  await OTPServices.deleteOTP(payload.email);
 
   return {
     admissionId: parsedApplicationData.applicationId,
